@@ -1,1 +1,13 @@
-\lipsum
+\subsection{Collision}
+
+The collision constraint between two particles $ \mathbf{x}_{i} $ and $ \mathbf{x}_{j} $ is formulated by Equation \ref{eq:collisionConstraint}, where the radius of each particles is $ r $. It is commonly solved by translating each particle away from one another along the line $ \| \mathbf{x}_{ij} \| $.
+
+\begin{equation} \label{eq:collisionConstraint}
+  C(\mathbf{x}_{i}, \mathbf{x}_{j}) = \| \mathbf{x}_{ij} \| - r \geq 0 
+\end{equation}
+
+Solving collision constraints between particles by brute force is a very time consuming process, $\mathcal{O}(n^{2})$. As of such developers often look at smarter ways of solving collisions between particles. Due to the fact that particles and other objects for that matter only interact in small regions it is well suited to look at methods involving spatial subdivisions. 
+
+\subsubsection{Uniform grid}
+
+One such method that also performs well and is easy to parallelize is the use of a \textit{Uniform Grid} \ref{Green}. A uniform grid implies that the world is composed of a number of cells in a cubical grid, where each cell can store particles. If the cell width equals the diameter of a particle (under the assumption that all particles have the same diameter) collisions only occur between particles of neighbouring cells. This means that only 27 cells per particle needs to be considered in a three dimensional space if the particle collisions are to be solved in a particle based manner.
