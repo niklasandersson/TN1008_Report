@@ -1,6 +1,20 @@
+\subsection{Collision}
+
+The collision constraint between two particles $ \mathbf{x}_{i} $ and $ \mathbf{x}_{j} $ is formulated by Equation \ref{eq:collisionConstraint}, where the radius of each particles is $ r $. It is commonly solved by translating each particle away from one another along the line $ \| \mathbf{x}_{ij} \| $.
+
+\begin{equation} \label{eq:collisionConstraint}
+  C(\mathbf{x}_{i}, \mathbf{x}_{j}) = \| \mathbf{x}_{ij} \| - r \geq 0 
+\end{equation}
+
+Solving collision constraints between particles by brute force is a very time consuming process, $\mathcal{O}(n^{2})$. As of such developers often look at smarter ways of solving collisions between particles. Due to the fact that particles and other objects for that matter only interact in small regions it is well suited to look at methods involving spatial subdivisions. 
+
+\subsubsection{Uniform grid}
+
+One such method that also performs well and is easy to parallelize is the use of a \textit{Uniform Grid} \ref{Green}. A uniform grid implies that the world is composed of a number of cells in a cubical grid, where each cell can store particles. If the cell width equals the diameter of a particle (under the assumption that all particles have the same diameter) collisions only occur between particles of neighbouring cells. This means that only 27 cells per particle needs to be considered in a three dimensional space if the particle collisions are to be solved in a particle based manner.
+
 \subsection{Density}
 
-The estimation of the predicted position of the particles is initially based on solving a density constraint per particle. The density constraint is a function of the position of the current particle and the positions of its neighbours within a fixed radius. For each particle \textit{i}, the applied density constraint is defined as equation 1
+The estimation of the predicted position of the particles is initially based on solving a density constraint. Where each density constraint is applied per particle. The density constraint is a function of the position of the current particle and the positions of its neighbours within a fixed radius. For each particle \textit{i}, the applied density constraint is defined as equation \ref{eq:Ci}
 
 \begin{equation}
 \label{eq:Ci}
@@ -10,31 +24,42 @@ C_i(\hat{\mathbf{p}}) = \frac{\rho_i}{\rho_0} - 1,
 where $\hat{\mathbf{p}}$ contains the positions of the neighbouring particles, $\rho_0$ is the fluid's rest density and $\rho_i$ is estimated by the SPH estimator:
 
 \begin{equation}
-\label{Rhoi}
-\rho_i = \sum\limits_{j} m_j W(\mathbf{p_i} - \mathbf{p_j}, h).
+\label{eq:Rhoi}
+\rho_i = \sum\limits_{j} m_j W(\mathbf{p}_i - \mathbf{p}_j, h).
 \end{equation}
 
-In this particular case, where all particles have equal mass, the mass parameter $m_j$ can be removed from \ref{Rhoi}. What is left is a sum of density kernel $W$, also called \textit{Poly6}, SEE. Where $W$ is a function of; current particle position $i$, neighbouring positions $j$ and a fixed radius $h$.
+In this particular case, where all particles have equal mass, the mass parameter $m_j$ can be removed from $\ref{eq:Rhoi}$. What is left is a sum of density kernels $W$, also called \textit{Poly6}, SEE MULLER 2003(eller Niklas?). Where $W$ is a function with input parameters: the position of the current particle  $i$, neighbouring positions $j$ and a fixed radius $h$.
+\\
+The next term to be solved from equation (NIKLAS REF?) is $\nabla p_k C$. It is done by following MONOGHAN approach and has two different outcomes based on whenever particle $k$ is a neighbouring particle or not:
+\\
+\begin{equation}
+ \nabla \mathbf{p}_k C_i = \frac{1}{\rho_0}
+  \begin{cases}
+  \label{eq:NablaC} 
+   \displaystyle \sum\limits_{j} \nabla \mathbf{p}_k W(\mathbf{p}_i - \mathbf{p}_j, h) & $\text{if }$ k = i \\
+   -\nabla \mathbf{p}_k W(\mathbf{p}_i - \mathbf{p}_j, h) & $\text{if }$ k = j \\
+  \end{cases}
+\end{equation}
+\\
+With \ref{eq:Ci} and \ref{eq:NablaC} it is now possible to determine $\lambda$ from equation (NIKLAS REF?):
+
+\begin{equation}
+\label{eq:Lambda}
+\lambda_i = \frac{ -C_i(\hat{\mathbf{p}}) }{ \sum\limits_{k} |\nabla \mathbf{p}_k C_i|^2 } 
+\end{equation}
+\\
+As in MULLER VATTEN, we can observe that this is not stable when the particles are at the boundry of the smoothing kernel, due to the denominator and the exponents in the kernel function. Therefore, a user specified relaxation parameter, $\varepsilon$ , is added to (NIKLAS REF?) to add constraint force. The modified version of $\ref{eq:Lambda}$ is given by
+\begin{equation}
+\label{eq:Lambda}
+\lambda_i = \frac{ -C_i(\hat{\mathbf{p}}) }{ \sum\limits_{k} |\nabla \mathbf{p}_k C_i|^2 + \varepsilon} .
+\end{equation}
+We can now include $\lambda_j$ from the neighbouring particles in the estimation of the final position update $\Delta \mathbf{p}$ given by
+
+\begin{equation}
+\label{eq:DeltaP}
+\Delta \mathbf{p} = \frac{1}{\rho_0} \sum\limits_{j} (\lambda_i + \lambda_j) \nabla W(\mathbf{p}_i - \mathbf{p}_j, h).
+\end{equation}
 
 \subsection{Tensile instability}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
