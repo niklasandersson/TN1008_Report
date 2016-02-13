@@ -1,1 +1,40 @@
-\lipsum
+\subsection{Density}
+
+The estimation of the predicted position of the particles is initially based on solving a density constraint per particle. The density constraint is a function of the position of the current particle and the positions of its neighbours within a fixed radius. For each particle \textit{i}, the applied density constraint is defined as equation 1
+
+\begin{equation}
+\label{eq:Ci}
+C_i(\hat{\mathbf{p}}) = \frac{\rho_i}{\rho_0} - 1,
+\end{equation}
+\\
+where $\hat{\mathbf{p}}$ contains the positions of the neighbouring particles, $\rho_0$ is the fluid's rest density and $\rho_i$ is estimated by the SPH estimator:
+
+\begin{equation}
+\label{Rhoi}
+\rho_i = \sum\limits_{j} m_j W(\mathbf{p_i} - \mathbf{p_j}, h).
+\end{equation}
+
+In this particular case, where all particles have equal mass, the mass parameter $m_j$ can be removed from \ref{Rhoi}. What is left is a sum of density kernel $W$, also called \textit{Poly6}, SEE. Where $W$ is a function of; current particle position $i$, neighbouring positions $j$ and a fixed radius $h$.
+
+\subsection{Tensile instability}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
