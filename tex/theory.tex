@@ -17,7 +17,7 @@ One such method that also performs well and is easy to parallelize is the use of
 
 \subsubsection{Collision with objects}
 
-By transforming the geometry of an object to a particle representation and adding shape matching constraints too hold the particles together one can also have collisions with arbitrary objects \cite{muller2005meshless, macklin2014unified}. The process of creating a particle representation of an object is called \textit{Voxelization} and there exist various methods for achieving this, e.g. \cite{VoxPolygon, VoxSingle}. Some methods build \textit{Occtrees} to be be used for querying occupied \textit{Voxels} while other methods derive the particle representation from ray-casting \cite{VoxSingle}. Performance wise it is suitable to perform the Voxelization of objects prior to the start of the simulation.
+By transforming the geometry of an object to a particle representation and adding shape matching constraints too hold the particles together one can also have collisions with arbitrary objects \cite{muller2005meshless, macklin2014unified}. The process of creating a particle representation of an object is called \textit{Voxelization} and there exist various methods for achieving this, e.g. \cite{VoxPolygon, VoxSingle}. Some methods build \textit{Occtrees} to be be used for querying occupied \textit{Voxels} while other methods derive the particle representation from \textit{Ray-casting} \cite{VoxSingle}. Performance wise it is suitable to perform the Voxelization of objects prior to the start of the simulation.
 
 
 \subsection{Density}
@@ -89,7 +89,7 @@ Firstly, the vorticity, which defines the curl of the local vector field at the 
 
 \begin{equation}
 \label{eq:Omega}
-\omega_{i} = \nabla \times \mathbf{v} =  \sum\limits_{j} \mathbf{v}_{ij} \times \nabla_\mathbf{p}_{j} W(\mathbf{p}_i - \mathbf{p}_j, h),
+\omega_{i} = \nabla \times \mathbf{v} =  \sum\limits_{j} \mathbf{v}_{ij} \times \nabla_\mathbf{p}_{j} W(\mathbf{p}_{i} - \mathbf{p}_{j}, h),
 \end{equation}
 where $\mathbf{v}_{ij} = \mathbf{v}_{j} - \mathbf{v}_{i}$. Then we use the location vector $\mathbf{N} = \frac{\eta}{|\eta|}$, with $\eta = \nabla|\omega|_{i}$
 , which will have a direction from areas with low vorticity towards areas containing high vorticity. The resulting vorticity force is defined by
