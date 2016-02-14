@@ -107,9 +107,27 @@ The viscocity is also added to the velocity vector field as a force, the term wi
 
 \subsection{Shape matching}
 
-To simulate shape matching and elastic behaviour the initial physical properties of the deformable
+To simulate shape matching and elastic behaviour, the initial physical properties of the deformable
 object must be stored. There are no need for any connection information, since the positions and velocities of the particles 
 are updated without any computation of internal constraint. Instead, defined goal positions are determined by matching the shape of the deformed 
 object and the shape of the initial object. For each time step all particles are pulled towards their goal positions.
 
 \subsubsection{Goal positions}
+The goal positions are obtained when the best transformation is determined that matches the set of initial positions 
+$\mathbf{\hat{x}}$ and the set of deformed positions reffered as $\mathbf{x}$. The goal is to minimize the transformation matrix, 
+which is described as a composition of a rotation matrix 
+and translation vectors. The corresponding roation matrix $\mathbf{R}$ and the translational vectors
+$\mathbf{\hat{c}}$ and $\mathbf{c}$ are determined by minimizing 
+
+\begin{equation}
+\label{eq:MinR}
+\sum\limits_{i} w_{i}\left(\mathbf{R}(\mathbf{\hat{x}}_{i} - \mathbf{\hat{c}}) + \mathbf{c} - \mathbf{x}_{i} \right)^{2},
+\end{equation}
+\\
+where $w_{i}$ are the weigths of individual points. The optimal translation vectors are given by the centre of mass of the initial shape and the centre of mass
+of the deformed shape. They are defined as
+
+\begin{equation}
+\label{eq:TransVec}
+\mathbf{\hat{c}} = \frac{1}{M} \sum\limits_{i} m_{i}\mathbf{\hat{x}}_{i} , 
+\end{equation}
