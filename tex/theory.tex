@@ -104,3 +104,12 @@ The viscocity is also added to the velocity vector field as a force, the term wi
 \label{eq:Viscosity}
 \mathbf{v}_{i}^{new} = \mathbf{v}_{i} + c \sum\limits_{j} \mathbf{v}_{ij} \cdot W(\mathbf{p}_i - \mathbf{p}_j, h).
 \end{equation}
+
+\subsection{Shape matching}
+
+To simulate shape matching and elastic behaviour the initial physical properties of the deformable
+object must be stored. There are no need for any connection information, since the positions and velocities of the particles 
+are updated without any computation of internal constraint. Instead, defined goal positions are determined by matching the shape of the deformed 
+object and the shape of the initial object. For each time step all particles are pulled towards their goal positions.
+
+\subsubsection{Goal positions}
