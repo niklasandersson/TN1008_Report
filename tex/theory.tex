@@ -1,12 +1,15 @@
+\subsection{Position-Based Dynamics}
+\input{tex/theory/pbd.tex}
+
 \subsection{Collision between particles}
 
 The collision constraint between two particles $ \mathbf{x}_{i} $ and $ \mathbf{x}_{j} $ is formulated by Equation \ref{eq:collisionConstraint}, where the radius of each particle is $ r $. It is commonly solved by translating each particle away from one another along the line $ \| \mathbf{x}_{ij} \| $.
 
 \begin{equation} \label{eq:collisionConstraint}
-  C(\mathbf{x}_{i}, \mathbf{x}_{j}) = \| \mathbf{x}_{ij} \| - r \geq 0 
+  C(\mathbf{x}_{i}, \mathbf{x}_{j}) = \| \mathbf{x}_{ij} \| - r \geq 0
 \end{equation}
 
-Solving collision constraints between particles by brute force is a very time consuming process, $\mathcal{O}(n^{2})$. As of such developers often look at smarter ways of solving collisions between particles. Due to the fact that particles and other objects for that matter only interact in small regions it is well suited to look at methods involving spatial subdivisions. 
+Solving collision constraints between particles by brute force is a very time consuming process, $\mathcal{O}(n^{2})$. As of such developers often look at smarter ways of solving collisions between particles. Due to the fact that particles and other objects for that matter only interact in small regions it is well suited to look at methods involving spatial subdivisions.
 
 \subsubsection{Uniform grid}
 
@@ -40,7 +43,7 @@ The next term to be solved from equation (NIKLAS REF?) is $\nabla C$. It is done
 \begin{equation}
  \nabla \mathbf{p}_k C_i = \frac{1}{\rho_0}
   \begin{cases}
-  \label{eq:NablaC} 
+  \label{eq:NablaC}
    \displaystyle \sum\limits_{j} \nabla \mathbf{p}_k W(\mathbf{p}_i - \mathbf{p}_j, h) & $\text{if }$ k = i \\
    - \nabla \mathbf{p}_k W(\mathbf{p}_i - \mathbf{p}_j, h) & $\text{if }$ k = j \\
   \end{cases}
