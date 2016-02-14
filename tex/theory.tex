@@ -50,13 +50,13 @@ With \ref{eq:Ci} and \ref{eq:NablaC} it is now possible to determine $\lambda$ f
 
 \begin{equation}
 \label{eq:Lambda}
-\lambda_i = \frac{- C_i(\hat{\mathbf{p}}) }{ \sum\limits_{k} |\nabla \mathbf{p}_k C_i|^2 } 
+\lambda_i = \frac{- C_i(\hat{\mathbf{p}}) }{ \sum\limits_{k} |\nabla \mathbf{p}_k C_i|^2 }.
 \end{equation}
 \\
 As seen in $\cite{macklin2013position}$, we can observe that this is not stable when the particles are at the boundary of the smoothing kernel, mainly because of the denominator with the exponents in the kernel function. Therefore a user specified relaxation parameter, $\varepsilon$, is added to (NIKLAS REF?) to add constraint force. The modified version of $\ref{eq:Lambda}$ is given by
 \begin{equation}
-\label{eq:Lambda}
-\lambda_i = \frac{- C_i(\hat{\mathbf{p}}) }{ \sum\limits_{k} |\nabla \mathbf{p}_k C_i|^2 + \varepsilon} .
+\label{eq:LambdaEpsilon}
+\lambda_i = \frac{- C_i(\hat{\mathbf{p}}) }{ \sum\limits_{k} |\nabla \mathbf{p}_k C_i|^2 + \varepsilon}.
 \end{equation}
 We can now include $\lambda_j$ from the neighbouring particles in the estimation of the final position update, $\Delta \mathbf{p}$, given by
 
@@ -66,33 +66,38 @@ We can now include $\lambda_j$ from the neighbouring particles in the estimation
 \end{equation}
 
 \subsection{Tensile instability}
-We continue to follow the work at \cite{macklin2013position}, by adding an artificial pressure to reduce particle splitting behaviour. The negative pressure tends to result into particle clustering and sometimes hard coupling, which is a common problem in SPH simulations. The trick is therefore to force the pressure to be non-negative, with following drawback; a reduction of the particles' cohesiveness. The artificial pressure force is described as
+We continue to follow the theory at \cite{macklin2013position}, by adding an artificial pressure to reduce unwanted particle behaviour. The negative pressure tends to result into particle clustering and sometimes hard coupling, which is a common problem in SPH simulations. The trick is therefore to force the pressure to be non-negative, with following drawback; a reduction of the particles' cohesiveness. The artificial pressure force is described as
 \\
 \begin{equation}
-\label{eq:DeltaP}
-s_{corr} = -k \left( \frac{W(\mathbf{p}_i - \mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)} \right). 
+\label{eq:Scorr}
+s_{corr} = -k \left( \frac{W(\mathbf{p}_i - \mathbf{p}_j, h)}{W(\Delta \mathbf{q}, h)} \right),
 \end{equation}
 \\
-Where $\Delta \mathbf{q}$ is a point with a fixed distance inside the kernel radius and k is a small positive constant. This term is then included in the equation $\ref{eq:DeltaP}$ and the final version is updated to 
+where $\Delta \mathbf{q}$ is a point with a fixed distance inside the kernel radius and k is a small positive constant. This term is then included in equation $\ref{eq:DeltaP}$ and the final version is updated to 
 
 \begin{equation}
-\label{eq:DeltaP}
+\label{eq:DeltaPscorr}
 \Delta \mathbf{p} = \frac{1}{\rho_0} \sum\limits_{j} (\lambda_i + \lambda_j + s_{corr}) \nabla W(\mathbf{p}_i - \mathbf{p}_j, h).
 \end{equation}
 
-\subsection{Vorticity and Viscosity}
+\subsection{Vorticity confinement and Viscosity}
+We add lost energy, called vorticity, to compensate the lost turbulent motion in our simulation, see \cite{macklin2013position}. 
+Firstly, the vorticity, which defines the curl of the local vector field at the current particle's location, is calculated by using SPH kernel function
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\begin{equation}
+\label{eq:Omega}
+\omega_{i} = \nabla \times \mathbf{v} =  \sum\limits_{j} \mathbf{v}_{ij} \times \nabla_\mathbf{p}_{j} W(\mathbf{p}_i - \mathbf{p}_j, h),
+\end{equation}
+where $\mathbf{v}_{ij} = \mathbf{v}_{j} - \mathbf{v}_{i}$. Then we use the location vector $\mathbf{N} = \frac{\eta}{|\eta|}$, with $\eta = \nabla|\omega|_{i}$
+, which will have a direction from areas with low vorticity towards areas containing high vorticity. The resulting vorticity force is defined by
+\\
+\begin{equation}
+\label{eq:Vorticity}
+\mathbf{f}_{i}^{vorticity} = \varepsilon \left(\mathbf{N} \times \omega_{i} \right).
+\end{equation}
+\\
+The viscocity is also added to the velocity vector field as a force, the term will control the fluid's consistency and is calculated as 
+\begin{equation}
+\label{eq:Viscosity}
+\mathbf{v}_{i}^{new} = \mathbf{v}_{i} + c \sum\limits_{j} \mathbf{v}_{ij} \cdot W(\mathbf{p}_i - \mathbf{p}_j, h).
+\end{equation}
