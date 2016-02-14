@@ -5,14 +5,9 @@ category deals with attempting to create a simulation that is as physically
 correct as possible while the second is focusing on creating a simulation that
 is visually pleasing but whose behavior might not be entirely accurate. In this
 report we focus solely on the second category and discuss a method called
-position-based dynamics(PBD)\cite{muller2007position} that is designed to be
-used in games and other real-time applications. Position-based dynamics is a
+\textit{Position-Based Dynamics} (PBD) \cite{muller2007position} that is designed to be used in games and other real-time applications. Position-based dynamics is a
 particle-based method which means that the behavior of the fluid is determined
 by the movements of a large number of particles. This is not something that is
-unique to position-based dynamics by any means as it is in fact one of the most
+unique to Position-Based Dynamics by any means as it is in fact one of the most
 common ways of doing fluid simulation. Another common method that is based on
-particles is smoothed particle hydrodynamics(SPH)\cite{monaghan1992smoothed}.
-What makes PBD unique is that it is based on a set of constraints directly
-affecting the positions of the particles making the system more stable than the
-traditional approach of applying forces to update the acceleration that will
-then have to be integrated twice before a new position can be derived.
+particles is \textit{Smoothed-Particle Hydrodynamics} (SPH) \cite{monaghan1992smoothed}. What makes PBD unique is that it is based on a set of constraints directly affecting the positions of the particles making the system more stable than the traditional approach of applying forces to update the acceleration that will then have to be integrated twice before a new position can be derived.
