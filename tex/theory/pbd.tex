@@ -1,0 +1,33 @@
+In position-based dynamics particles constitutes the fundamental component of
+any simulation.  Particles are represented using three attributes. The first
+attribute is the position of the particle, the second is the particles velocity
+and the third is its mass. By restricting the basis of any simulation to a
+simple particle representation several different phenomenon, such as water,
+smoke, cloth and deformable bodies, can be simulated in a unified manner by
+varying the behavior of the particles.
+
+In order to control the movements of the particles and obtain a simulation with
+the desired behavior a set of constraints are used. A constraint can be defined
+in one of two ways. The first is as a bilateral constrain as defined in
+Equation~\ref{eq:bilateralC} and the second is a a unilateral constraint as in
+Equation~\ref{eq:unilateralC}. In these equations $ \mathbf{x_{i}} $ denotes
+the position of particle $ i $.
+
+\begin{equation}
+\label{eq:bilateralC}
+  C(\mathbf{x_1}, \mathbf{x_2}, ..., \mathbf{x_n}) = 0
+\end{equation}
+
+\begin{equation}
+\label{eq:unilateralC}
+  C(\mathbf{x_1}, \mathbf{x_2}, ..., \mathbf{x_n}) \geq 0
+\end{equation}
+
+In order to ensure that all constraints are fullfilled $ \Delta \mathbf{x} $ is
+introduced as seen in Equations
+
+\begin{equation}
+\label{eq:bilateralCDelta}
+C(\mathbf{x_1} + \Delta \mathbf{x_1}, \mathbf{x_2} + \Delta \mathbf{x_2}, ..., \mathbf{x_n} + \Delta \mathbf{x_}) = 0
+\end{equation}
+
