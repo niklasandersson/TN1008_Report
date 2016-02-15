@@ -50,7 +50,7 @@ derived from Equation~\ref{eq:cCombined} using \textit{Taylor expansion}.
 
 \begin{equation}
 \label{eq:Taylor}
-C(\mathbf{x} + \Delta \mathbf{x}) \approx C(\mathbf{x}) + \nabla \mathbf{C(\mathbf{x})^{T}} \Delta \mathbf{x} \succ 0
+C(\mathbf{x} + \Delta \mathbf{x}) \approx C(\mathbf{x}) + \nabla C(\mathbf{x})^{T} \Delta \mathbf{x} \succ 0
 \end{equation}
 
 To further extend Equation~\ref{eq:Taylor} it is assumed that $ \Delta
@@ -66,7 +66,7 @@ Inserting Equation~\ref{eq:deltaX} into Equation~\ref{eq:Taylor} and solving for
 
 \begin{equation}
 \label{eq:solvedforlambda}
-\lambda = - \frac{C}{\left | \nabla \mathbf{C} \right |^2}
+\lambda = - \frac{C(\mathbf{x})}{\left | \nabla C(\mathbf{x}) \right |^2}
 \end{equation}
 
 Equation~\ref{eq:solvedforlambda} can be extended to
@@ -75,7 +75,7 @@ the constraint.
 
 \begin{equation}
 \label{eq:lambdaallparticles}
-\lambda = - \frac{C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})}{\sum_{j} \left | \nabla_{x_{j}} \mathbf{C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})} \right |^2}
+\lambda = - \frac{C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})}{\sum_{j} \left | \nabla_{x_{j}} C(\mathbf{x_{1}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})} \right |^2}
 \end{equation}
 
 By calculating $ \Delta \mathbf{x} $ during each time step of the simulation
