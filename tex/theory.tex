@@ -1,15 +1,8 @@
 \subsection{Position-Based Dynamics}
 \input{tex/theory/pbd.tex}
 
-\subsection{Collision between particles}
-
-The collision constraint between two particles $ \mathbf{x}_{i} $ and $ \mathbf{x}_{j} $ is formulated by Equation \ref{eq:collisionConstraint}, where the radius of each particle is $ r $. It is commonly solved by translating each particle away from one another along the line $ \| \mathbf{x}_{ij} \| $.
-
-\begin{equation} \label{eq:collisionConstraint}
-  C(\mathbf{x}_{i}, \mathbf{x}_{j}) = \| \mathbf{x}_{ij} \| - r \geq 0
-\end{equation}
-
-Solving collision constraints between particles by brute force is a very time consuming process, $\mathcal{O}(n^{2})$. As of such developers often look at smarter ways of solving collisions between particles. Due to the fact that particles and other objects for that matter only interact in small regions it is well suited to look at methods involving spatial subdivisions.
+\subsection{Collision Constraint}
+\input{tex/theory/collision.tex}
 
 \subsubsection{Uniform grid}
 
@@ -49,7 +42,7 @@ The next term to be solved from equation $\ref{eq:Taylor}$ is $\nabla C$. It is 
   \end{cases}
 \end{equation}
 \\
-As seen in $\cite{macklin2013position}$, we can observe that this is not stable when the particles are at the boundary of the smoothing kernel, mainly because of the denominator with the exponents in the kernel function. 
+As seen in $\cite{macklin2013position}$, we can observe that this is not stable when the particles are at the boundary of the smoothing kernel, mainly because of the denominator with the exponents in the kernel function.
 Therefore a user specified relaxation parameter, $\varepsilon$, is added to $\ref{eq:Taylor}$ to add constraint force. The modified version of $\ref{eq:lambdaallparticles}$ is given by
 \begin{equation}
 \label{eq:LambdaEpsilon}
@@ -70,7 +63,7 @@ We continue to follow the theory at \cite{macklin2013position}, by adding an art
 s_{corr} = -k \left( \frac{W(\mathbf{x}_i - \mathbf{x}_j, h)}{W(\Delta \mathbf{q}, h)} \right),
 \end{equation}
 \\
-where $\Delta \mathbf{q}$ is a point with a fixed distance inside the kernel radius and k is a small positive constant. This term is then included in equation $\ref{eq:DeltaP}$ and the final version is updated to 
+where $\Delta \mathbf{q}$ is a point with a fixed distance inside the kernel radius and k is a small positive constant. This term is then included in equation $\ref{eq:DeltaP}$ and the final version is updated to
 
 \begin{equation}
 \label{eq:DeltaPscorr}
@@ -78,7 +71,7 @@ where $\Delta \mathbf{q}$ is a point with a fixed distance inside the kernel rad
 \end{equation}
 
 \subsection{Vorticity confinement and Viscosity}
-We add lost energy, called vorticity, to compensate the lost turbulent motion in our simulation, see \cite{macklin2013position}. 
+We add lost energy, called vorticity, to compensate the lost turbulent motion in our simulation, see \cite{macklin2013position}.
 Firstly, the vorticity, which defines the curl of the local vector field at the current particle's location, is calculated by using SPH kernel function
 
 \begin{equation}
@@ -93,7 +86,7 @@ where $\mathbf{v}_{ij} = \mathbf{v}_{j} - \mathbf{v}_{i}$. Then we use the locat
 \mathbf{f}_{i_{vorticity}} = \varepsilon \left(\mathbf{N} \times \omega_{i} \right).
 \end{equation}
 \\
-The viscocity is also added to the velocity vector field as a force, the term will control the fluid's consistency and is calculated as 
+The viscocity is also added to the velocity vector field as a force, the term will control the fluid's consistency and is calculated as
 \begin{equation}
 \label{eq:Viscosity}
 \mathbf{v}_{i_{new}} = \mathbf{v}_{i} + c \sum\limits_{j} \mathbf{v}_{ij} \cdot W(\mathbf{x}_i - \mathbf{x}_j, h).
@@ -102,16 +95,16 @@ The viscocity is also added to the velocity vector field as a force, the term wi
 \subsection{Shape matching}
 
 To simulate shape matching and elastic behaviour the initial physical properties of the deformable
-object must be stored. There are no need for any connection information, since the positions and the velocities of the particles 
-are updated without any computation of internal constraint. Instead, defined goal positions are determined by matching the shape of the deformed 
+object must be stored. There are no need for any connection information, since the positions and the velocities of the particles
+are updated without any computation of internal constraint. Instead, defined goal positions are determined by matching the shape of the deformed
 object and the shape of the initial object. For each time step all particles are pulled towards their goal positions.
 
 \subsubsection{Goal positions}
-The goal positions are obtained when the best transformation is determined that matches the set of initial positions 
-$\mathbf{\hat{x}}$ and the set of deformed positions reffered as $\mathbf{x}$. As seen in $\cite{bender2014muller}$, we aim to minimize the transformation matrix, 
-which is described as a composition of a rotation matrix 
+The goal positions are obtained when the best transformation is determined that matches the set of initial positions
+$\mathbf{\hat{x}}$ and the set of deformed positions reffered as $\mathbf{x}$. As seen in $\cite{bender2014muller}$, we aim to minimize the transformation matrix,
+which is described as a composition of a rotation matrix
 and translation vectors. The corresponding roation matrix $\mathbf{R}$ and the translational vectors
-$\mathbf{\hat{c}}$ and $\mathbf{c}$ are determined by minimizing 
+$\mathbf{\hat{c}}$ and $\mathbf{c}$ are determined by minimizing
 
 \begin{equation}
 \label{eq:MinR}
@@ -125,10 +118,10 @@ of the deformed shape. They are defined as
 \label{eq:TransVec}
 \mathbf{\hat{c}} = \frac{1}{M} \sum\limits_{i} m_{i}\mathbf{\hat{x}}_{i} , \indent
 \mathbf{c} = \frac{1}{M} \sum\limits_{i} m_{i}\mathbf{x}_{i} , \indent
-M = \sum\limits_{i} m_{i} 
+M = \sum\limits_{i} m_{i}
 \end{equation}
 \\
-By minimizing the term $\sum\limits_{i} (\mathbf{A}\mathbf{\hat{r}}_{i} - \mathbf{r}_{i})^2$ with $ \mathbf{r}_{i} = \mathbf{x}_{i} - 
+By minimizing the term $\sum\limits_{i} (\mathbf{A}\mathbf{\hat{r}}_{i} - \mathbf{r}_{i})^2$ with $ \mathbf{r}_{i} = \mathbf{x}_{i} -
 \mathbf{c}$ and $\mathbf{\hat{r}}_{i} = \mathbf{\hat{x}}_{i} - \mathbf{\hat{c}} $, we get the optimal linear transformation $\mathbf{A}$
 of the initial and deformed shape. This transformation is therefore determined by
 
@@ -138,19 +131,19 @@ of the initial and deformed shape. This transformation is therefore determined b
 = \mathbf{A}_{r}\mathbf{A}_{s}.
 \end{equation}
 \\
-In equation $\ref{eq:A}$ we are interested in the rotational part of the transformation. We only need to determine the rotational part of 
+In equation $\ref{eq:A}$ we are interested in the rotational part of the transformation. We only need to determine the rotational part of
 $\mathbf{A}_{r}$, since $\mathbf{A}_{s}$ is symmetric. To obtain the optimal rotation $\mathbf{R}$ a polar decomposition of $\mathbf{A}_{r}$ is done; $\mathbf{A}_{r} = \mathbf{R}\mathbf{S}$, where $\mathbf{S}$ is a symmetric matrix.
 We can now determine the goal positions by the definition
 
 \begin{equation}
 \label{eq:G}
-\mathbf{g}_{i} = \left[ \mathbf{R}(\mathbf{c} - \mathbf{R}\mathbf{\hat{c}}) \right] 
+\mathbf{g}_{i} = \left[ \mathbf{R}(\mathbf{c} - \mathbf{R}\mathbf{\hat{c}}) \right]
     \begin{bmatrix}
        \mathbf{\hat{x}}_{i} \\[0.3em]
-       1 
+       1
     \end{bmatrix},
 \end{equation}
-Finally, the position corrections can be computed by 
+Finally, the position corrections can be computed by
 
 \begin{equation}
 \label{eq:DeltaX}
