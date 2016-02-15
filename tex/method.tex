@@ -1,3 +1,8 @@
+From the beginning our goal was to create a GPU framework like \cite{macklin2014unified} supporting simulation of many different elements, e.g. fluids, cloth and rigid bodies. Therefore we started of studying how Position-Based Dynamics worked in general. When we had an understanding of what we would need to do in order to achieve our goal we decided to start implementing prototype applications solving the constraints we were interested in. The selected constraints were shape matching constraints for rigid and deformable bodies and density constraints for fluids. 
+
+These prototypes had simulations running in 2D and were made single threaded to allow more convenient debugging on the CPU. However as the project progressed and when we were about to make the switch to the GPU we decided to narrow our scope. Hence our focus shifted into solely develop a fluid simulation running on the GPU in 3D.
+
+We first had a stint working with OpenCL and OpenGL interoperability. But after a longer break we decided to make the switch to CUDA and OpenGL interoperability instead. This as we were keen on using CUDA \textit{Surfaces} which are textures that can be both written and read during the same kernel run.
 
 
 \subsection{Algorithm overview}
@@ -65,6 +70,7 @@ The three dimensional Position Based Dynamics fluid simulation implementation we
 
 
 \subsection{Collision}
+Something \cite{bullet} \cite{radix}
 
 \subsection{Rendering}
 
