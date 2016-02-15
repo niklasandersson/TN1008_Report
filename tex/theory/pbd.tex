@@ -24,10 +24,67 @@ C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}}) \geq 0
 \end{equation}
 
 In order to ensure that all constraints are fullfilled $ \Delta \mathbf{x} $ is
-introduced as seen in Equations
+introduced as seen in Equations~\ref{eq:bilateralCDelta} and~\ref{eq:unilateralCDelta}.
 
 \begin{equation}
 \label{eq:bilateralCDelta}
 C(\mathbf{x_{1}} + \Delta \mathbf{x_{1}}, \mathbf{x_{2}} + \Delta \mathbf{x_{2}}, ..., \mathbf{x_{n}} + \Delta \mathbf{x_{n}}) = 0
+\end{equation}
+
+\begin{equation}
+\label{eq:unilateralCDelta}
+C(\mathbf{x_{1}} + \Delta \mathbf{x_{1}}, \mathbf{x_{2}} + \Delta \mathbf{x_{2}}, ..., \mathbf{x_{n}} + \Delta \mathbf{x_{n}}) \geq 0
+\end{equation}
+
+For a more compact notation Equations~\ref{eq:bilateralCDelta}
+and~\ref{eq:unilateralCDelta} can be written as Equation~\ref{eq:cCombined}
+where $ \succ $ is either $ = $ or $ \geq $.
+
+\begin{equation}
+\label{eq:cCombined}
+C(\mathbf{x} + \Delta \mathbf{x}) \succ 0
+\end{equation}
+
+As described in~\cite{macklin2013position} Equation~\ref{eq:Taylor} can be
+derived from Equation~\ref{eq:cCombined} using Taylor expansion.
+
+\begin{equation}
+\label{eq:Taylor}
+C(\mathbf{x} + \Delta \mathbf{x}) \approx C(\mathbf{x}) + \nabla \mathbf{C(\mathbf{x})^{T}} \Delta \mathbf{x} \succ 0
+\end{equation}
+
+To further extend Equation~\ref{eq:Taylor} it is assumed that $ \Delta
+\mathbf{x} $ is restricted to be in the direction of the gradient as expresed
+in Equation~\ref{eq:deltaX}.
+
+\begin{equation}
+\label{eq:deltaX}
+\Delta \mathbf{x} = \nabla C(\mathbf{x}) \lambda
+\end{equation}
+
+Inserting Equation~\ref{eq:deltaX} into Equation~\ref{eq:Taylor} and solving for $ \lambda $ results in Equation~\ref{eq:solvedforlambda}.
+
+\begin{equation}
+\label{eq:solvedforlambda}
+\lambda = - \frac{C}{\left | \nabla \mathbf{C} \right |^2}
+\end{equation}
+
+Equation~\ref{eq:solvedforlambda} can be extended to
+Equation~\ref{eq:lambdaallparticles} when considering all particles involed in
+the constraint.
+
+\begin{equation}
+\label{eq:lambdaallparticles}
+\lambda = - \frac{C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})}{\sum_{j} \left | \nabla_{x_{j}} \mathbf{C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})} \right |^2}
+\end{equation}
+
+By calculating $ \Delta \mathbf{x} $ during each time step of the simulation
+and applying this to the postion of each particle according to
+Equation~\ref{eq:applydelta} the behavior of the particles will accommodate the
+constraints placed on them.
+
+\begin{equation}
+\label{eq:applydelta}
+\mathbf{x_{i}^{'}} = \mathbf{x_{i}} + \Delta \mathbf{x_{i}} = \mathbf{x_{i}} + \lambda \nabla_{x_{i}} C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})
 \end{equation}
 
