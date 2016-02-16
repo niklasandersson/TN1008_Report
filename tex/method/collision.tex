@@ -6,7 +6,7 @@ is well suited to look at methods involving spatial subdivisions.
 
 \subsubsection{Uniform grid}
 
-One such method that also performs well and is easy to parallelize is the use of a \textit{Uniform Grid} \cite{Green}. A uniform grid implies that the world is composed of a number of cells in a cubical grid, where each cell can store particles. If the cell width equals the diameter of a particle (under the assumption that all particles have the same diameter) collisions only occur between particles of neighbouring cells. This means that only 27 cells per particle needs to be considered in a three dimensional space if the particle collisions are to be solved in a particle based manner. This type of grid is also convenient when solving fluid constraints that originates from the ideas behind \textit{Smoothed-Particle Hydrodynamics} (SPH), as those require all neighbouring particles within a certain distance (defined by the kernel width of \textit{Spiky} and \textit{Poly6} kernels).
+One such method that also performs well and is easy to parallelize is the use of a \textit{Uniform Grid} \cite{Green}. A uniform grid implies that the world is composed of a number of cells in a cubical grid, where each cell can store particles. If the cell width equals the diameter of a particle (under the assumption that all particles have the same diameter) collisions only occur between particles of neighbouring cells. This means that only 27 cells per particle needs to be considered in a three dimensional space if the particle collisions are to be solved in a particle based manner. This type of grid is also convenient when solving fluid constraints that originates from the ideas behind SPH, as those require all neighbouring particles within a certain distance (defined by the kernel width of \textit{Spiky} and \textit{Poly6} kernels).
 
 \subsubsection{Collision with objects}
 
@@ -64,7 +64,7 @@ Once we found the neighbouring particles of each particle there are several meth
 \item Solve the collision constraint and update both $\mathbf{x}_{p}$ and $\mathbf{x}_{p}^{*}$.
 \end{enumerate}
 
-Only particle $p$ should be updated as there are duplicates of every collision constraint, it will namely exist another constraint where $p$ and $q$ are swapped. Both the actual position ($\mathbf{x}_{p}$) and the predicted position ($\mathbf{x}_{p}^{*}$) are updated as we are only interested in seperating the particles and not to perform an actual collision. To perform read and write (update) of the positions we must involve atomics as there can be several threads writing to the same memory adress at the same time. 
+Only particle $p$ should be updated as there are duplicates of every collision constraint, it will namely exist another constraint where $p$ and $q$ are swapped. Both the actual position ($\mathbf{x}_{p}$) and the predicted position ($\mathbf{x}_{p}^{*}$) are updated as we are only interested in separating the particles and not to perform a physical collision. To perform read and write (update) of the positions we must involve atomics as there can be several threads writing to the same memory address at the same time. 
 
 The second method we implemented to solve collision constraints is based on constructing a number of batches (maximum number of batches needed equals the number of possible collisions per particle) \cite{bullet}, where each batch contains a set of collision constraints that can be solved in parallel without the use of atomics. 
 
