@@ -1,0 +1,41 @@
+For solving collision constraints we use the method in
+\cite{Green} that are based upon sorting grid cells of a uniform grid. First is
+the buffer that is going to store the cell ids filled with the maximum value of
+an unsigned integer.  Then, per particle, is a cell id computed and stored in
+the cell ids buffer at the location represented by the index of the particle.
+The choice of cell id can for example be done by a linear indexing of the cells
+or as we do, by using a space filling curve. We use the \textit{Z-order curve}
+that is based on calculations of \textit{Morton codes} as it will increase the
+spatial locality of nieghbouring particles in the buffer \cite{Green}. Higher
+spatial locality between particles is great as the use of textures then will
+give more cache hits when we perform calculations per particle involving its
+neighbours.
+
+When each particle has received a cell id, the cell ids buffer is sorted
+increasingly. The index of each particle is also sorted as part of the sorting
+process, i.e. we sort by key, where the cell id is key and the particle index
+is value. This, as it will enable reordering of all other buffers and textures
+as well when the sorting is done, allowing for more cache hits to happen and
+for more convenient reads and writes inside the code.
+
+Now all particles in each grid cell lie next to each other in memory. To then
+find neighbouring particles it is convenient to know the start and end of each
+cell. These are found by launching kernels per particle, where each particle
+compares it's cell id with the cell id of the previous and next particle to see
+if they are equal. If the previous particle's cell id is different from this
+particle's cell id we know that the starting index of the cell for this
+particle is the index of this particle. Vice versa then applies to finding the
+ending index of a cell.
+
+Given the cell endings and cell starts the k-nearest neighbours of a particle
+can be found. To find the neighbours we first need to find the neighbouring
+cells. This is trivial with a linear indexing. But with a space filling curve
+we need to first compute a new position and then apply the space filling
+curve's hash function to find out the index of that cell. I.e. by adding cell
+widths to the position of a particle (in x, y, and z) we can compute the cell
+id for that position, the cell id can then be used to find the beginning of
+that cell, allowing us to loop through all the particles inside that cell. This
+as we know when to stop looping due to us previously deriving the ending index
+of the cell.
+
+Something \cite{bullet} \cite{radix}
