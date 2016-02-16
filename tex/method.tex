@@ -84,6 +84,7 @@ Now all particles in each grid cell lie next to each other in memory. To then fi
 Given the cell endings and cell starts the k-nearest neighbours of a particle can be found. To find the neighbours we first need to find the neighbouring cells. This is trivial with a linear indexing. But with a space filling curve we need to first compute a new position and then apply the space filling curve's hash function to find out the index of that cell. I.e. by adding cell widths to the position of a particle (in x, y, and z) we can compute the cell id for that position, the cell id can then be used to find the beginning of that cell, allowing us to loop through all the particles inside that cell. This as we know when to stop looping due to us previously deriving the ending index of the cell.
 
 
+
 Something \cite{bullet} \cite{radix}
 
 \subsection{Rendering}
