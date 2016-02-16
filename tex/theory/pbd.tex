@@ -69,22 +69,26 @@ Inserting Equation~\ref{eq:deltaX} into Equation~\ref{eq:Taylor} and solving for
 \lambda = - \frac{C(\mathbf{x})}{\left | \nabla C(\mathbf{x}) \right |^2}
 \end{equation}
 
-Equation~\ref{eq:solvedforlambda} can be extended to
-Equation~\ref{eq:lambdaallparticles} when considering all particles involed in
-the constraint.
+At this point it is possible to solve for the correction vector $ \Delta
+\mathbf{x} $ but to make it more practical we consider
+Equation~\ref{eq:solvedforlambda} for each individual particle involved in the
+constraint. This will also allow for the inclusion of particles with different
+mass. Equation~\ref{eq:lambdaallparticles} shows the result of these
+considerations where $ w_{j} $ is the inverse mass of particle $ j $.
 
 \begin{equation}
 \label{eq:lambdaallparticles}
-\lambda = - \frac{C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})}{\sum_{j} \left | \nabla_{x_{j}} C(\mathbf{x_{1}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})} \right |^2}
+\lambda = - \frac{C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})}{\sum_{j} w_{j} \left | \nabla_{x_{j}} C(\mathbf{x_{1}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})} \right |^2}
 \end{equation}
 
 By calculating $ \Delta \mathbf{x} $ during each time step of the simulation
 and applying this to the postion of each particle according to
 Equation~\ref{eq:applydelta} the behavior of the particles will accommodate the
-constraints placed on them.
+constraints placed on them. Note that the inverse mass of the particle under
+consideration is present here as well.
 
 \begin{equation}
 \label{eq:applydelta}
-\mathbf{x_{i}^{'}} = \mathbf{x_{i}} + \Delta \mathbf{x_{i}} = \mathbf{x_{i}} + \lambda \nabla_{x_{i}} C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})
+\mathbf{x_{i}^{'}} = \mathbf{x_{i}} + \Delta \mathbf{x_{i}} = \mathbf{x_{i}} + \lambda w_{i} \nabla_{x_{i}} C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}})
 \end{equation}
 
