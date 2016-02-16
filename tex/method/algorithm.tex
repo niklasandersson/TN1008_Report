@@ -11,8 +11,8 @@ presented in Algorithm \ref{alg:overview}.
 \small
 
 \For{$i$ : $numberOfParticles$}
-\State Apply forces: $\mathbf{v}_{i} = \mathbf{v}_{i} + (\mathbf{f}_{gravity} + \mathbf{f}_{i_{vorticity}})\Delta t$
-\State Predict position: $\mathbf{x}_{i}^{*}= \mathbf{x}_{i} + \mathbf{v}_{i} \Delta t$
+\State Apply forces: $\mathbf{v}_{i} \Leftarrow \mathbf{v}_{i} + (\mathbf{f}_{gravity} + \mathbf{f}_{i_{vorticity}})\Delta t$
+\State Predict position: $\mathbf{x}_{i}^{*} \Leftarrow \mathbf{x}_{i} + \mathbf{v}_{i} \Delta t$
 \State Confine particle to box, adjust $\mathbf{x}_{i}$, $\mathbf{x}_{i}^{*}$ and $\mathbf{v}_{i}$
 \EndFor
 
@@ -43,12 +43,12 @@ presented in Algorithm \ref{alg:overview}.
 \State Solve collision constraints, update both $\mathbf{x}$ and $\mathbf{x}^{*}$
 \EndWhile
 \For{$i$ : $numberOfParticles$}
-\State Apply delta position: $\mathbf{x}_{i}^{*} = \mathbf{x}_{i}^{*} + \Delta \mathbf{x}_{i}^{*}$
+\State Apply delta position: $\mathbf{x}_{i}^{*} \Leftarrow \mathbf{x}_{i}^{*} + \Delta \mathbf{x}_{i}^{*}$
 \EndFor
 \EndWhile
 \For{$i$ : $numberOfParticles$}
-\State Update velocity: $\mathbf{v}_{i} = \frac{(\mathbf{x}_{i}^{*} - \mathbf{x}_{i})}{\Delta t}$
-\State Update position: $\mathbf{x}_{i} = \mathbf{x}_{i}^{*}$
+\State Update velocity: $\mathbf{v}_{i} \Leftarrow \frac{(\mathbf{x}_{i}^{*} - \mathbf{x}_{i})}{\Delta t}$
+\State Update position: $\mathbf{x}_{i} \Leftarrow \mathbf{x}_{i}^{*}$
 \EndFor
 \For{$i$ : $numberOfParticles$}
 \State Compute omegas $\mathbf{\Omega}_{i}$ to be used for computation of vorticity and viscosity
@@ -57,7 +57,7 @@ presented in Algorithm \ref{alg:overview}.
 \State Compute vorticity $\mathbf{f}_{i_{vorticity}}$
 \EndFor
 \For{$i$ : $numberOfParticles$}
-\State Compute and apply viscosity: $\mathbf{v}_{i} = \mathbf{v}_{i} + \mathbf{v}_{viscosity}$
+\State Compute and apply viscosity: $\mathbf{v}_{i} \Leftarrow \mathbf{v}_{i} + \mathbf{v}_{viscosity}$
 \EndFor
 
 \end{algorithmic}
