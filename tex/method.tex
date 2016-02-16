@@ -1,88 +1,78 @@
-From the beginning our goal was to create a GPU framework like \cite{macklin2014unified} supporting simulation of many different elements, e.g. fluids, cloth and rigid bodies. Therefore we started of studying how Position-Based Dynamics worked in general. When we had an understanding of what we would need to do in order to achieve our goal we decided to start implementing prototype applications solving the constraints we were interested in. The selected constraints were shape matching constraints for rigid and deformable bodies and density constraints for fluids. 
-
-These prototypes had simulations running in 2D and were made single threaded to allow more convenient debugging on the CPU. However as the project progressed and when we were about to make the switch to the GPU we decided to narrow our scope. Hence our focus shifted into solely develop a fluid simulation running on the GPU in 3D.
-
-We first had a stint working with OpenCL and OpenGL interoperability. But after a longer break we decided to make the switch to CUDA and OpenGL interoperability instead. This as we were keen on using CUDA \textit{Surfaces} which are textures that can be both written and read during the same kernel run.
-
-In the remainder of this section we will in greater detail explain the implementations of the prototypes and the final fluid simulation.
-
 \subsection{Algorithm overview}
+\input{tex/method/algorithm.tex}
 
-The three dimensional Position Based Dynamics fluid simulation implementation we have made is inspired by both \cite{macklin2013position} and \cite{macklin2014unified}. Our implementation is based upon two types of constraints, collision and density. A brief outline of the implementation is presented in Algorithm \ref{alg:overview}.
+From the beginning our goal was to create a GPU framework like
+\cite{macklin2014unified} supporting simulation of many different elements,
+e.g. fluids, cloth and rigid bodies. Therefore we started of studying how
+Position-Based Dynamics worked in general. When we had an understanding of what
+we would need to do in order to achieve our goal we decided to start
+implementing prototype applications solving the constraints we were interested
+in. The selected constraints were shape matching constraints for rigid and
+deformable bodies and density constraints for fluids.
 
-\begin{algorithm}
-\caption{Outline of a simulation step}
-\label{alg:overview}
-\begin{algorithmic}[1]
-\small
+These prototypes had simulations running in 2D and were made single threaded to
+allow more convenient debugging on the CPU. However as the project progressed
+and when we were about to make the switch to the GPU we decided to narrow our
+scope. Hence our focus shifted into solely develop a fluid simulation running
+on the GPU in 3D.
 
-\For{$i$ : $numberOfParticles$}
-\State Apply forces: $\mathbf{v}_{i} = \mathbf{v}_{i} + (\mathbf{f}_{gravity} + \mathbf{f}_{i_{vorticity}})\Delta t$
-\State Predict position: $\mathbf{x}_{i}^{*}= \mathbf{x}_{i} + \mathbf{v}_{i} \Delta t$
-\State Confine particle to box, adjust $\mathbf{x}_{i}$, $\mathbf{x}_{i}^{*}$ and $\mathbf{v}_{i}$ 
-\EndFor
+We first had a stint working with OpenCL and OpenGL interoperability. But after
+a longer break we decided to make the switch to CUDA and OpenGL
+interoperability instead. This as we were keen on using CUDA \textit{Surfaces}
+which are textures that can be both written and read during the same kernel
+run.
 
+In the remainder of this section we will in greater detail explain the
+implementations of the prototypes and the final fluid simulation.
 
-\For{$i$ : $numberOfParticles$}
-\State Compute cell id $h_{i}$ by utilization of Z-order hashing
-\EndFor
+\subsection{Parallelism} To maximize the throughput of GPUs fine-grained
+parallelism is required. The use of particles together with PBD enables a
+choice of the level of parallelism for a certain task. I.e. calculations can
+either be done per particle, per constraint or per grid cell if a uniform grid
+is used. We are mostly using the per particle or a particle-centric perspective
+when performing the calculations, however we also use a constraint-centric
+view, e.g. for solving collision constraints, and the per cell view when
+constructing the grid.
 
-\State Sort particles in increasing $h$
+\subsection{Collision} For solving collision constraints we use the method in
+\cite{Green} that are based upon sorting grid cells of a uniform grid. First is
+the buffer that is going to store the cell ids filled with the maximum value of
+an unsigned integer.  Then, per particle, is a cell id computed and stored in
+the cell ids buffer at the location represented by the index of the particle.
+The choice of cell id can for example be done by a linear indexing of the cells
+or as we do, by using a space filling curve. We use the \textit{Z-order curve}
+that is based on calculations of \textit{Morton codes} as it will increase the
+spatial locality of nieghbouring particles in the buffer \cite{Green}. Higher
+spatial locality between particles is great as the use of textures then will
+give more cache hits when we perform calculations per particle involving its
+neighbours.
 
-\State Reorder all textures and buffers according to sorted ordering
+When each particle has received a cell id, the cell ids buffer is sorted
+increasingly. The index of each particle is also sorted as part of the sorting
+process, i.e. we sort by key, where the cell id is key and the particle index
+is value. This, as it will enable reordering of all other buffers and textures
+as well when the sorting is done, allowing for more cache hits to happen and
+for more convenient reads and writes inside the code.
 
-\State Compute $cellStarts$ and $cellEndings$ for all cells containing particles
+Now all particles in each grid cell lie next to each other in memory. To then
+find neighbouring particles it is convenient to know the start and end of each
+cell. These are found by launching kernels per particle, where each particle
+compares it's cell id with the cell id of the previous and next particle to see
+if they are equal. If the previous particle's cell id is different from this
+particle's cell id we know that the starting index of the cell for this
+particle is the index of this particle. Vice versa then applies to finding the
+ending index of a cell.
 
-
-\For{$i$ : $numberOfParticles$}
-\State Find neighbouring particles $N_{i}(\mathbf{x}_{i}^{*})$ used by collision and density constraints
-\EndFor
-
-\While{$solverIteration$ $<$ $numberOfSoverIterations$}
-\For{$i$ : $numberOfParticles$}
-\State Compute lambda $\lambda_{i}$
-\EndFor
-\For{$i$ : $numberOfParticles$}
-\State Compute delta position $\Delta \mathbf{x}_{i}^{*}$
-\EndFor
-\While{$stabilizationIteration$ $<$ $numberOfStabilizationIterations$}
-\State Solve collision constraints, update both $\mathbf{x}$ and $\mathbf{x}^{*}$
-\EndWhile
-\For{$i$ : $numberOfParticles$}
-\State Apply delta position: $\mathbf{x}_{i}^{*} = \mathbf{x}_{i}^{*} + \Delta \mathbf{x}_{i}^{*}$
-\EndFor
-\EndWhile
-\For{$i$ : $numberOfParticles$}
-\State Update velocity: $\mathbf{v}_{i} = \frac{(\mathbf{x}_{i}^{*} - \mathbf{x}_{i})}{\Delta t}$
-\State Update position: $\mathbf{x}_{i} = \mathbf{x}_{i}^{*}$
-\EndFor
-\For{$i$ : $numberOfParticles$}
-\State Compute omegas $\mathbf{\Omega}_{i}$ to be used for computation of vorticity and viscosity
-\EndFor
-\For{$i$ : $numberOfParticles$}
-\State Compute vorticity $\mathbf{f}_{i_{vorticity}}$
-\EndFor
-\For{$i$ : $numberOfParticles$}
-\State Compute and apply viscosity: $\mathbf{v}_{i} = \mathbf{v}_{i} + \mathbf{v}_{viscosity}$
-\EndFor
-
-\end{algorithmic}
-\end{algorithm}
-
-
-\subsection{Parallelism}
-To maximize the throughput of GPUs fine-grained parallelism is required. The use of particles together with PBD enables a choice of the level of parallelism for a certain task. I.e. calculations can either be done per particle, per constraint or per grid cell if a uniform grid is used. We are mostly using the per particle or a particle-centric perspective when performing the calculations, however we also use a constraint-centric view, e.g. for solving collision constraints, and the per cell view when constructing the grid.
-
-\subsection{Collision}
-For solving collision constraints we use the method in \cite{Green} that are based upon sorting grid cells of a uniform grid. First is the buffer that is going to store the cell ids filled with the maximum value of an unsigned integer.
-Then, per particle, is a cell id computed and stored in the cell ids buffer at the location represented by the index of the particle. The choice of cell id can for example be done by a linear indexing of the cells or as we do, by using a space filling curve. We use the \textit{Z-order curve} that is based on calculations of \textit{Morton codes} as it will increase the spatial locality of nieghbouring particles in the buffer \cite{Green}. Higher spatial locality between particles is great as the use of textures then will give more cache hits when we perform calculations per particle involving its neighbours.
-
-When each particle has received a cell id, the cell ids buffer is sorted increasingly. The index of each particle is also sorted as part of the sorting process, i.e. we sort by key, where the cell id is key and the particle index is value. This, as it will enable reordering of all other buffers and textures as well when the sorting is done, allowing for more cache hits to happen and for more convenient reads and writes inside the code.
-
-Now all particles in each grid cell lie next to each other in memory. To then find neighbouring particles it is convenient to know the start and end of each cell. These are found by launching kernels per particle, where each particle compares it's cell id with the cell id of the previous and next particle to see if they are equal. If the previous particle's cell id is different from this particle's cell id we know that the starting index of the cell for this particle is the index of this particle. Vice versa then applies to finding the ending index of a cell.
-
-Given the cell endings and cell starts the k-nearest neighbours of a particle can be found. To find the neighbours we first need to find the neighbouring cells. This is trivial with a linear indexing. But with a space filling curve we need to first compute a new position and then apply the space filling curve's hash function to find out the index of that cell. I.e. by adding cell widths to the position of a particle (in x, y, and z) we can compute the cell id for that position, the cell id can then be used to find the beginning of that cell, allowing us to loop through all the particles inside that cell. This as we know when to stop looping due to us previously deriving the ending index of the cell.
-
+Given the cell endings and cell starts the k-nearest neighbours of a particle
+can be found. To find the neighbours we first need to find the neighbouring
+cells. This is trivial with a linear indexing. But with a space filling curve
+we need to first compute a new position and then apply the space filling
+curve's hash function to find out the index of that cell. I.e. by adding cell
+widths to the position of a particle (in x, y, and z) we can compute the cell
+id for that position, the cell id can then be used to find the beginning of
+that cell, allowing us to loop through all the particles inside that cell. This
+as we know when to stop looping due to us previously deriving the ending index
+of the cell.
 
 Something \cite{bullet} \cite{radix}
 
