@@ -1,8 +1,11 @@
-The three dimensional Position Based Dynamics fluid simulation implementation
-we have made is inspired by both \cite{macklin2013position} and
-\cite{macklin2014unified}. Our implementation is based upon two types of
-constraints, collision and density. A brief outline of the implementation is
-presented in Algorithm \ref{alg:overview}.
+In order to create a fluid simulation using position-based dynamics the two
+types of constraints described in the theory section was used. Collision
+constraints where used in order to handle collision between pairs of particles
+and density constraints where used to give the particles a fluid like behavior.
+Is this section we will describe how this simulation was implemented.
+Algorithm~\ref{alg:overview} presents an outline of the simulation and
+presentes the steps that are repeated for every time step. This overview will
+act as the basis for the reminder of this section.
 
 \begin{algorithm}
 \caption{Outline of a simulation step}
