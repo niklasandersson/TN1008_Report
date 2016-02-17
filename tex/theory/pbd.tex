@@ -24,7 +24,8 @@ C(\mathbf{x_{1}}, \mathbf{x_{2}}, ..., \mathbf{x_{n}}) \geq 0
 \end{equation}
 
 In order to ensure that all constraints are fullfilled $ \Delta \mathbf{x} $ is
-introduced as seen in Equations~\ref{eq:bilateralCDelta} and~\ref{eq:unilateralCDelta}.
+introduced to Equations~\ref{eq:bilateralC} and~\ref{eq:unilateralC} resulting
+in the expression below.
 
 \begin{equation}
 \label{eq:bilateralCDelta}
@@ -37,16 +38,16 @@ C(\mathbf{x_{1}} + \Delta \mathbf{x_{1}}, \mathbf{x_{2}} + \Delta \mathbf{x_{2}}
 \end{equation}
 
 For a more compact notation Equations~\ref{eq:bilateralCDelta}
-and~\ref{eq:unilateralCDelta} can be written as Equation~\ref{eq:cCombined}
-where $ \succ $ is either $ = $ or $ \geq $.
+and~\ref{eq:unilateralCDelta} is written in the following way
+where $ \succ $ is either $ = $ or $ \geq $:
 
 \begin{equation}
 \label{eq:cCombined}
 C(\mathbf{x} + \Delta \mathbf{x}) \succ 0
 \end{equation}
 
-As described in~\cite{macklin2013position} Equation~\ref{eq:Taylor} can be
-derived from Equation~\ref{eq:cCombined} using \textit{Taylor expansion}.
+Following the theory of~\cite{macklin2013position} Equation~\ref{eq:cCombined}
+can be expressed as Equation~\ref{eq:Taylor} below using Taylor expansion.
 
 \begin{equation}
 \label{eq:Taylor}
@@ -54,8 +55,7 @@ C(\mathbf{x} + \Delta \mathbf{x}) \approx C(\mathbf{x}) + \nabla C(\mathbf{x})^{
 \end{equation}
 
 To further extend Equation~\ref{eq:Taylor} it is assumed that $ \Delta
-\mathbf{x} $ is restricted to be in the direction of the gradient as expresed
-in Equation~\ref{eq:deltaX}.
+\mathbf{x} $ is restricted to be in the direction of the gradient:
 
 \begin{equation}
 \label{eq:deltaX}
