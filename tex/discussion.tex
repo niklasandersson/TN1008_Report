@@ -1,12 +1,12 @@
 Our implementation of a fluid simulation using position-based dynamics was able
 to achieve real-time performance for a large number of particles even while
 running on laptop grade hardware. By varying parameters such as vorticity and
-viscosity different fluid behaviors can be achieved ranging form thick slow
+viscosity different fluid behaviors can be achieved ranging from thick slow
 moving substances to quick and turbulent water.
 
 In order for the simulation to be running in real time it was necessary to
-exploit high levels of parallelism. Initial tests where conducted in the form
-of single threaded applications running on the CPU but we where only able to
+exploit high levels of parallelism. Initial tests were conducted in the form
+of single threaded applications running on the CPU but we were only able to
 simulate less than 500 particles before the framerate became unacceptably low.
 Even running the simulation in a multithreaded manner on modern CPUs capable of
 8 or more concurrent tasks would not be sufficient to achieve the desired
