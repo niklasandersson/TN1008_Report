@@ -22,7 +22,7 @@ density constraint is defined as Equation \ref{eq:Ci}
 C_i(\mathbf{x}) = \frac{\rho_i}{\rho_0} - 1,
 \end{equation}
 
-where $\mathbf{x}$ contains the positions of the neighbouring particles,
+where $\mathbf{x}$ contains the positions of all particles involved in the constraint,
 $\rho_0$ is the fluid's rest density and $\rho_i$ is estimated by the density
 SPH estimator:
 
@@ -100,9 +100,8 @@ using the Spiky kernel function as following:
 \end{equation}
 
 where $\mathbf{v}_{ij} = \mathbf{v}_{j} - \mathbf{v}_{i}$, and then by using the
-vector $\mathbf{N} = \frac{\eta}{|\eta|}$, with $\eta = \nabla|\omega_{i}|$,
-which will have a direction from areas with low vorticity towards areas
-containing high vorticity. The resulting vorticity force is defined by
+vector $\mathbf{N} = \frac{\eta}{|\eta|}$, with $\eta = \nabla|\omega_{i}|$
+The resulting vorticity force is defined by
 
 \begin{equation}
 \label{eq:Vorticity}
