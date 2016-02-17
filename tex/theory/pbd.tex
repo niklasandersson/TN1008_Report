@@ -59,14 +59,15 @@ To further extend Equation~\ref{eq:Taylor} it is assumed that $ \Delta
 
 \begin{equation}
 \label{eq:deltaX}
-\Delta \mathbf{x} = \nabla C(\mathbf{x}) \lambda
+\Delta \mathbf{x} = w \nabla C(\mathbf{x}) \lambda,
 \end{equation}
+ where w is the inverse of the particles' mass.
 
 Inserting Equation~\ref{eq:deltaX} into Equation~\ref{eq:Taylor} and solving for $ \lambda $ results in Equation~\ref{eq:solvedforlambda}.
 
 \begin{equation}
 \label{eq:solvedforlambda}
-\lambda = - \frac{C(\mathbf{x})}{\left | \nabla C(\mathbf{x}) \right |^2}
+\lambda = - \frac{C(\mathbf{x})}{w \left | \nabla C(\mathbf{x}) \right |^2}
 \end{equation}
 
 At this point it is possible to solve for the correction vector $ \Delta

@@ -28,11 +28,11 @@ SPH estimator:
 
 \begin{equation}
 \label{eq:Rhoi}
-\rho_i = \sum\limits_{j} m_j W(\mathbf{x}_i - \mathbf{x}_j, h).
+\rho_i = \sum\limits_{j} w_j W(\mathbf{x}_i - \mathbf{x}_j, h).
 \end{equation}
 
 In this particular case, where all particles have equal mass, the mass
-parameter $m_j$ can be removed from equation $\ref{eq:Rhoi}$. What is left is a
+parameter $w_j$ can be removed from equation $\ref{eq:Rhoi}$. What is left is a
 sum of density kernels $W$, also called \textit{Poly6}, see
 \cite{muller2003particle}. Where $W$ is a kernel function with the parameters;
 the position of the current particle  $i$, neighboring positions $j$ and a
@@ -51,14 +51,14 @@ outcomes based on whenever particle $k$ is a neighboring particle or not:
   \end{cases}
 \end{equation}
 
-The value of $ \nabla \mathbf{x} W(\mathbf{x}_i - \mathbf{x}_j, h) $ is a
-kernel called \textit{Spiky} that is described together with the \textit{Poly6}
-kernel in~\cite{muller2003particle}.
+The definition of $ \nabla \mathbf{x} W(\mathbf{x}_i - \mathbf{x}_j, h) $ is a
+kernel called \textit{Spiky} that is, together with the \textit{Poly6}
+kernel, defined and described in ~\cite{muller2003particle}.
 
 As seen in $\cite{macklin2013position}$, we can observe that this is not stable
 when the particles are at the boundary of the smoothing kernel, mainly because
 of the denominator with the exponents in the kernel function.  Therefore a user
-specified relaxation parameter, $\varepsilon$, is added to $\ref{eq:Taylor}$ to
+specified relaxation parameter, $\varepsilon$, is added to equation $\ref{eq:Taylor}$ to
 add constraint force. The modified version of $\ref{eq:lambdaallparticles}$ is
 given by
 
@@ -75,8 +75,8 @@ estimation of the final position update, $\Delta \mathbf{x}$, given by
 \end{equation}
 
 \subsection{Tensile Instability} We continue to follow the theory at
-\cite{macklin2013position} that describes problems with particle clustering and
-coupling as a result of negative pressure. The trick is therefore to force the
+\cite{macklin2013position} that describes different problems with particle clustering and
+coupling as a result of negative pressure. The trick is to force the
 pressure to be non-negative using an additional pressure term. This pressure
 force is described as
 
@@ -85,7 +85,7 @@ force is described as
 s_{corr} = -k \left( \frac{W(\mathbf{x}_i - \mathbf{x}_j, h)}{W(\Delta \mathbf{q}, h)} \right),
 \end{equation}
 
-where $\Delta \mathbf{q}$ is a point with a fixed distance inside the kernel
+where $\Delta \mathbf{q}$ is a point with a fixed distance from the current particle inside the kernel
 radius and k is a small positive constant. This term is then included in
 equation $\ref{eq:DeltaP}$ and the final version is updated to
 
@@ -94,9 +94,9 @@ equation $\ref{eq:DeltaP}$ and the final version is updated to
 \Delta \mathbf{x} = \frac{1}{\rho_0} \sum\limits_{j} (\lambda_i + \lambda_j + s_{corr}) \nabla W(\mathbf{x}_i - \mathbf{x}_j, h).
 \end{equation}
 
-\subsection{Vorticity Confinement and Viscosity} in order to add turbulent
-motion to the fluid we add a vorticity term to the calculations as described in
-\cite{macklin2013position}. The vorticity is calculated by first using the
+\subsection{Vorticity Confinement and Viscosity} 
+In order to add turbulent motion to the fluid we add a vorticity term to the calculations, as described in
+\cite{macklin2013position}. The vorticity is calculated by; first using the
 \textit{Spiky} kernel function as following:
 
 \begin{equation}
@@ -104,7 +104,7 @@ motion to the fluid we add a vorticity term to the calculations as described in
 \omega_{i} = \nabla \times \mathbf{v} =  \sum\limits_{j} \mathbf{v}_{ij} \times \nabla_{\mathbf{x}_{j}} W(\mathbf{x}_{i} - \mathbf{x}_{j}, h),
 \end{equation}
 
-where $\mathbf{v}_{ij} = \mathbf{v}_{j} - \mathbf{v}_{i}$. Then we use the
+where $\mathbf{v}_{ij} = \mathbf{v}_{j} - \mathbf{v}_{i}$, and then by using the
 vector $\mathbf{N} = \frac{\eta}{|\eta|}$, with $\eta = \nabla|\omega_{i}|$,
 which will have a direction from areas with low vorticity towards areas
 containing high vorticity. The resulting vorticity force is defined by
