@@ -1,16 +1,25 @@
-Solving collision constraints between particles by brute force is a very time
-consuming process, $\mathcal{O}(n^{2})$. As of such developers often look at
-smarter ways of solving collisions between particles. Due to the fact that
-particles and other objects for that matter only interact in small regions it
-is well suited to look at methods involving spatial subdivisions.
+The next step in the simulation is to handle collisions between particles.
+Solving collision constraints between particles by comparing every pair of
+particles to one another is a very time consuming process,
+$\mathcal{O}(n^{2})$. As such it is often desired to look at smarter ways of
+solving collisions between particles. Due to the fact that particles and other
+objects for that matter only interact in small regions it is well suited to
+look at methods involving spatial subdivisions.
 
 \subsubsection{Uniform grid}
 
-One such method that also performs well and is easy to parallelize is the use of a \textit{Uniform Grid} \cite{Green}. A uniform grid implies that the world is composed of a number of cells in a cubical grid, where each cell can store particles. If the cell width equals the diameter of a particle (under the assumption that all particles have the same diameter) collisions only occur between particles of neighbouring cells. This means that only 27 cells per particle needs to be considered in a three dimensional space if the particle collisions are to be solved in a particle based manner. This type of grid is also convenient when solving fluid constraints that originates from the ideas behind SPH, as those require all neighbouring particles within a certain distance (defined by the kernel width of \textit{Spiky} and \textit{Poly6} kernels).
-
-\subsubsection{Collision with objects}
-
-By transforming the geometry of an object to a particle representation and adding shape matching constraints to hold the particles together one can also have collisions with arbitrary objects \cite{muller2005meshless, macklin2014unified}. The process of creating a particle representation of an object is called \textit{Voxelization} and there exist various methods for achieving this, e.g. \cite{VoxPolygon, VoxSingle}. Some methods build \textit{Occtrees} to be used for querying occupied \textit{Voxels} while other methods derive the particle representation from \textit{Ray-casting} \cite{VoxSingle}. Performance wise it is suitable to perform the Voxelization of objects prior to the start of the simulation.
+One such method that also performs well and is easy to parallelize is the use
+of a \textit{Uniform Grid} \cite{Green}. A uniform grid implies that the world
+is composed of a number of cells in a cubical grid, where each cell can store
+particles. If the cell width equals the diameter of a particle (under the
+assumption that all particles have the same diameter) collisions only occur
+between particles of neighbouring cells. This means that only 27 cells per
+particle needs to be considered in a three dimensional space if the particle
+collisions are to be solved in a particle based manner. This type of grid is
+also convenient when solving fluid constraints that originates from the ideas
+behind SPH, as those require all neighbouring particles within a certain
+distance (defined by the kernel width of \textit{Spiky} and \textit{Poly6}
+kernels).
 
 \subsection{Solving collision constraints}
 
@@ -54,18 +63,32 @@ that cell, allowing us to loop through all the particles inside that cell. This
 as we know when to stop looping due to us previously deriving the ending index
 of the cell.
 
-Once we found the neighbouring particles of each particle there are several methods that can be applied to solve the collision constraints between them. We have implemented two different methods. The first method implemented uses atomics and can either be executed per constraint or per particle. We prefer the per constraint manner where the following happens.
+Once we found the neighbouring particles of each particle there are several
+methods that can be applied to solve the collision constraints between them. We
+have implemented two different methods. The first method implemented uses
+atomics and can either be executed per constraint or per particle. We prefer
+the per constraint manner where the following happens.
 
 \begin{enumerate}
 \item Each particle $p$ stores it's neighbours in a buffer.
 \item Launch kernels for each neighbouring particle $q$ in the buffer.
 \item From the index of the element particle $p$ can be derived.
-\item We now know that particles $p$ and $q$ are affected by this constraint. 
+\item We now know that particles $p$ and $q$ are affected by this constraint.
 \item Solve the collision constraint and update both $\mathbf{x}_{p}$ and $\mathbf{x}_{p}^{*}$.
 \end{enumerate}
 
-Only particle $p$ should be updated as there are duplicates of every collision constraint, it will namely exist another constraint where $p$ and $q$ are swapped. Both the actual position ($\mathbf{x}_{p}$) and the predicted position ($\mathbf{x}_{p}^{*}$) are updated as we are only interested in separating the particles and not to perform a physical collision. To perform read and write (update) of the positions we must involve atomics as there can be several threads writing to the same memory address at the same time. 
+Only particle $p$ should be updated as there are duplicates of every collision
+constraint, it will namely exist another constraint where $p$ and $q$ are
+swapped. Both the actual position ($\mathbf{x}_{p}$) and the predicted position
+($\mathbf{x}_{p}^{*}$) are updated as we are only interested in separating the
+particles and not to perform a physical collision. To perform read and write
+(update) of the positions we must involve atomics as there can be several
+threads writing to the same memory address at the same time.
 
-The second method we implemented to solve collision constraints is based on constructing a number of batches (maximum number of batches needed equals the number of possible collisions per particle) \cite{bullet}, where each batch contains a set of collision constraints that can be solved in parallel without the use of atomics. 
+The second method we implemented to solve collision constraints is based on
+constructing a number of batches (maximum number of batches needed equals the
+number of possible collisions per particle) \cite{bullet}, where each batch
+contains a set of collision constraints that can be solved in parallel without
+the use of atomics.
 
 Something \cite{bullet} \cite{radix}

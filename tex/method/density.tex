@@ -1,0 +1,29 @@
+The workflow for solving the density constraint is closely tied with the theory starting at equation \ref{eq:Ci}. 
+To determine $\lambda_{i}$, the components in equation \ref{eq:LambdaEpsilon} are calculated seperately in parallel 
+for each particle \textit{i}.
+The numerator is calculated by following equation \ref{eq:Ci}, which is a sum of the smoothing kernel \textit{Poly6} over 
+all neighbours. The smoothing kernel has a width $h_{Poly6} = 4.1$ and the rest density parameter, $\rho$, is set to be $\rho = 1200$. 
+The denominator is a sum of the norm of the \textit{Spiky} kernel calculated over all neighbours 
+and is then set to the power of 2. The kernel width $h_{Spiky} = 6.1$ for \textit{Spiky} works well and the 
+relaxation parameter $\varepsilon$ is set to $\varepsilon = 0.0001$.
+\\
+\newline
+To extend the parallization even more we rearrange and rewrite equation \ref{eq:LambdaEpsilon} by including \ref{eq:NablaC}. With the 
+new equation \ref{eq:LambdaNew} we can observe that the difference between the sums is the abosolute value mark 
+outside respectively inside of the sums: 
+\\
+\begin{equation}
+\label{eq:LambdaNew}
+\lambda_i = \frac{- C_i(\hat{\mathbf{x}}) }{ |\sum\limits_{k} \nabla \mathbf{x}_k W|^{2} + \sum\limits_{j} |-\nabla \mathbf{x}_j W|^2  + \varepsilon}.
+\end{equation}
+\\
+\newline
+We then continue to follow the algorithm overview at \ref{alg:overview}, where the next step is to estimate the new position $\Delta \mathbf{x}^{*}_{i}$.
+The predicted position is defined at equation \ref{eq:DeltaPscorr}, containing a sum of $s_{corr}$ , $\lambda_{i}$, $\lambda_{j}$ 
+and \textit{Spiky} kernel over all neighbours. 
+The parameters of $s_{corr}$; k, n and $ \nabla \mathbf{q}$, are defined as $k = 0.2, n = 4, |\nabla \mathbf{q}| = 0.2$. 
+\\
+At last, the total predicted position is updated and applied by adding the newly and previously estimated position, 
+as seen at line 20 at algorithm \ref{alg:overview}.
+
+\subsubsection{Vorticity and Viscosity}

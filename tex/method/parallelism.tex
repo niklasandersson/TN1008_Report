@@ -1,0 +1,8 @@
+To maximize the throughput of GPUs fine-grained
+parallelism is required. The use of particles together with PBD enables a
+choice of the level of parallelism for a certain task. I.e. calculations can
+either be done per particle, per constraint or per grid cell if a uniform grid
+is used. We are mostly using the per particle or a particle-centric perspective
+when performing the calculations, however we also use a constraint-centric
+view, e.g. for solving collision constraints, and the per cell view when
+constructing the grid.
