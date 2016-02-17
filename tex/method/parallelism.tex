@@ -1,4 +1,7 @@
-To maximize the throughput of GPUs fine-grained
+In order to achieve real time performance the simulation had to be implemented
+for parallel execution on GPUs (Graphics Processing Unit). This is made
+possible through a technique called GPGPU (General-Purpose computing on
+Graphics Processing Units). To maximize the throughput of GPUs fine-grained
 parallelism is required. The use of particles together with PBD enables a
 choice of the level of parallelism for a certain task. I.e. calculations can
 either be done per particle, per constraint or per grid cell if a uniform grid

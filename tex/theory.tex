@@ -14,8 +14,8 @@ The estimation of the predicted position of the particles is initially based on
 solving a density constraint $C$ at Equation $\ref{eq:Taylor}$. Where each
 density constraint is applied per particle. The density constraint is a
 function of the position of the current particle and the positions of its
-neighbors within a fixed radius. For each particle \textit{i}, the applied
-density constraint is defined as equation \ref{eq:Ci}
+neighbours within a fixed radius. For each particle \textit{i}, the applied
+density constraint is defined as Equation \ref{eq:Ci}
 
 \begin{equation}
 \label{eq:Ci}
@@ -32,15 +32,14 @@ SPH estimator:
 \end{equation}
 
 In this particular case, where all particles have equal mass, the mass
-parameter $w_j$ can be removed from equation $\ref{eq:Rhoi}$. What is left is a
+parameter $m_j$ can be removed from Equation $\ref{eq:Rhoi}$. What is left is a
 sum of density kernels $W$, also called \textit{Poly6}, see
 \cite{muller2003particle}. Where $W$ is a kernel function with the parameters;
 the position of the current particle  $i$, neighboring positions $j$ and a
 fixed radius $h$.
 
-The next term to be solved from equation $\ref{eq:Taylor}$ is $\nabla C$. It is
-done by following \cite{macklin2013position} approach and has two different
-outcomes based on whenever particle $k$ is a neighboring particle or not:
+The next term to be solved from Equation $\ref{eq:Taylor}$ is $\nabla C$. It is
+done by following the approach of \cite{macklin2013position} and has two different outcomes based on whenever particle $k$ is a neighbouring particle or not:
 
 \begin{equation}
  \nabla \mathbf{x}_k C_i = \frac{1}{\rho_0}
