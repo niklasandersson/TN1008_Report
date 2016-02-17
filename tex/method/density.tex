@@ -27,3 +27,10 @@ At last, the total predicted position is updated and applied by adding the newly
 as seen at line 20 at algorithm \ref{alg:overview}.
 
 \subsubsection{Vorticity and Viscosity}
+The steps to calculate the vorticity and viscosity are fully described from equation \ref{eq:Omega} to equation \ref{eq:Viscosity}.
+A local estimation of the vorticity is initially calculated and defined as $\omega$. The complete vorticity force is then determined 
+by equation \ref{eq:Viscosity}, where we use the force strength parameter as $\varepsilon = 1$. The force is then added to the total 
+external force that is affecting the particles at the beginning of the time step, as seen at line 2 at algorithm \ref{alg:overview}. 
+\\
+The new viscosity velocity is calculated by adding the old velocity with the sum of the smoothing kernel \textit{Poly6} multiplied by the velocity difference between 
+the current particle and its neighbours. The viscosity strength parameter, as seen in \ref{eq:Viscosity}, is $c = 0.0001$. 
