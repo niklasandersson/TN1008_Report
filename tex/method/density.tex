@@ -30,7 +30,7 @@ as seen on line 20 in Algorithm \ref{alg:overview}.
 \subsubsection{Vorticity and viscosity}
 The steps to calculate the vorticity and viscosity are fully described from Equation \ref{eq:Omega} to Equation \ref{eq:Viscosity}.
 A local estimation of the vorticity is initially calculated and defined as $\omega$. The complete vorticity force is then determined
-by Equation \ref{eq:Viscosity}, where we use the force strength parameter as $\varepsilon = 1$. The force is then added to the total
+by Equation \ref{eq:Vorticity}, where we use the force strength parameter as $\varepsilon = 1$. The force is then added to the total
 external force that is affecting the particles at the beginning of the time step, as seen on line 2 in Algorithm \ref{alg:overview}.
 
 The new viscosity velocity is calculated by adding the old velocity with the sum of the smoothing kernel Poly6 multiplied by the velocity difference between
