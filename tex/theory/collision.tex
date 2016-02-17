@@ -12,9 +12,9 @@ normalized collision vector as defined as follows:
 \begin{equation}
 \label{eq:collisiongradient}
 \begin{aligned}
-\nabla_{\mathbf{x_{i}}} C(\mathbf{x_{i}}, \mathbf{x_{j}})) = \mathbf{n} = \frac{\mathbf{x_{ij}}}{\left | \mathbf{x_{ij}} \right |}
+\nabla_{\mathbf{x_{i}}} C(\mathbf{x_{i}}, \mathbf{x_{j}}) = \mathbf{n} = \frac{\mathbf{x_{ij}}}{\left | \mathbf{x_{ij}} \right |}
 \\
-\nabla_{\mathbf{x_{j}}} C(\mathbf{x_{i}}, \mathbf{x_{j}})) = - \mathbf{n} = - \frac{\mathbf{x_{ij}}}{\left | \mathbf{x_{ij}} \right |}
+\nabla_{\mathbf{x_{j}}} C(\mathbf{x_{i}}, \mathbf{x_{j}}) = - \mathbf{n} = - \frac{\mathbf{x_{ij}}}{\left | \mathbf{x_{ij}} \right |}
 \end{aligned}
 \end{equation}
 
@@ -31,7 +31,7 @@ constraint:
 In order to calculate the two correction vectors, $ \Delta \mathbf{x_{i}} $ and
 $ \Delta \mathbf{x_{j}} $, for the position of each particle we insert
 Equation~\ref{eq:lambdacollision} and Equation~\ref{eq:collisiongradient} into
-Equation~\ref{eq:deltaX} arrive at the following result:
+Equation~\ref{eq:deltaX} and arrive at the following result:
 
 \begin{equation}
 \label{eq:collisionresult}
