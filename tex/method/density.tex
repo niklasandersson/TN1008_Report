@@ -33,5 +33,5 @@ A local estimation of the vorticity is initially calculated and defined as $\ome
 by Equation \ref{eq:Vorticity}, where we use the force strength parameter as $\varepsilon = 1$. The force is then added to the total
 external force that is affecting the particles at the beginning of the time step, as seen on line 2 in Algorithm \ref{alg:overview}.
 
-The new viscosity velocity is calculated by adding the old velocity with the sum of the smoothing kernel Poly6 multiplied by the velocity difference between
+The new velocity is calculated by adding the old velocity with the sum of the smoothing kernel Poly6 multiplied by the velocity difference between
 the current particle and its neighbours. The viscosity strength parameter, as seen in Equation \ref{eq:Viscosity}, is $c = 0.0001$.
