@@ -1,7 +1,7 @@
-Our implementation of a fluid simulation using PBD was able
-to achieve real-time performance for a large number of particles even while
-running on laptop grade hardware. By varying parameters such as vorticity and
-viscosity different fluid behaviors can be achieved ranging from thick slow
+Our implementation of a fluid simulation using PBD was able to achieve
+real-time performance for a large number of particles (more than 50 000) even
+while running on laptop grade hardware. By varying parameters such as vorticity
+and viscosity different fluid behaviors can be achieved ranging from thick slow
 moving substances to quick and turbulent water.
 
 In order for the simulation to be running in real time it was necessary to
@@ -16,7 +16,9 @@ capable of over 1000 simultaneously executing tasks. The downside to using GPUs
 is that due to their unique architecture they make creating programs for them
 more difficult than something running on a CPU.
 
-It is interesting to note that the number of stabilization and solver iterations had very little impact on the final results for us as only one iteration of each were sufficient in order to run stable simulations.
+It is interesting to note that the number of stabilization and solver
+iterations had very little impact on the final results for us as only one
+iteration of each were sufficient in order to run stable simulations.
 
 \subsection{Future work}
 PBD is not limited to simulating
