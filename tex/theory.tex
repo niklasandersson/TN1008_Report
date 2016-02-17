@@ -10,24 +10,38 @@ explain the theory involed in creating a fluid simulation.
 
 \subsection{Density}
 
-The estimation of the predicted position of the particles is initially based on solving a density constraint $C$ at equation $\ref{eq:Taylor}$. Where each density constraint is applied per particle. The density constraint is a function of the position of the current particle and the positions of its neighbours within a fixed radius. For each particle \textit{i}, the applied density constraint is defined as equation \ref{eq:Ci}
+The estimation of the predicted position of the particles is initially based on
+solving a density constraint $C$ at equation $\ref{eq:Taylor}$. Where each
+density constraint is applied per particle. The density constraint is a
+function of the position of the current particle and the positions of its
+neighbors within a fixed radius. For each particle \textit{i}, the applied
+density constraint is defined as equation \ref{eq:Ci}
 
 \begin{equation}
 \label{eq:Ci}
 C_i(\hat{\mathbf{x}}) = \frac{\rho_i}{\rho_0} - 1,
 \end{equation}
-\\
-where $\hat{\mathbf{x}}$ contains the positions of the neighbouring particles, $\rho_0$ is the fluid's rest density and $\rho_i$ is estimated by the density SPH estimator:
+
+where $\hat{\mathbf{x}}$ contains the positions of the neighbouring particles,
+$\rho_0$ is the fluid's rest density and $\rho_i$ is estimated by the density
+SPH estimator:
 
 \begin{equation}
 \label{eq:Rhoi}
 \rho_i = \sum\limits_{j} m_j W(\mathbf{x}_i - \mathbf{x}_j, h).
 \end{equation}
 
-In this particular case, where all particles have equal mass, the mass parameter $m_j$ can be removed from equation $\ref{eq:Rhoi}$. What is left is a sum of density kernels $W$, also called \textit{Poly6}, see \cite{macklin2013position}. Where $W$ is a kernel function with the parameters; the position of the current particle  $i$, neighbouring positions $j$ and a fixed radius $h$.
-\\
-The next term to be solved from equation $\ref{eq:Taylor}$ is $\nabla C$. It is done by following \cite{macklin2013position} approach and has two different outcomes based on whenever particle $k$ is a neighbouring particle or not:
-\\
+In this particular case, where all particles have equal mass, the mass
+parameter $m_j$ can be removed from equation $\ref{eq:Rhoi}$. What is left is a
+sum of density kernels $W$, also called \textit{Poly6}, see
+\cite{muller2003particle}. Where $W$ is a kernel function with the parameters;
+the position of the current particle  $i$, neighboring positions $j$ and a
+fixed radius $h$.
+
+The next term to be solved from equation $\ref{eq:Taylor}$ is $\nabla C$. It is
+done by following \cite{macklin2013position} approach and has two different
+outcomes based on whenever particle $k$ is a neighboring particle or not:
+
 \begin{equation}
  \nabla \mathbf{x}_k C_i = \frac{1}{\rho_0}
   \begin{cases}
@@ -36,53 +50,77 @@ The next term to be solved from equation $\ref{eq:Taylor}$ is $\nabla C$. It is 
    - \nabla \mathbf{x}_k W(\mathbf{x}_i - \mathbf{x}_j, h) & $\text{if }$ k = j \\
   \end{cases}
 \end{equation}
-\\
-As seen in $\cite{macklin2013position}$, we can observe that this is not stable when the particles are at the boundary of the smoothing kernel, mainly because of the denominator with the exponents in the kernel function.
-Therefore a user specified relaxation parameter, $\varepsilon$, is added to $\ref{eq:Taylor}$ to add constraint force. The modified version of $\ref{eq:lambdaallparticles}$ is given by
+
+The value of $ \nabla \mathbf{x} W(\mathbf{x}_i - \mathbf{x}_j, h) $ is a
+kernel called \textit{Spiky} that is described together with the \textit{Poly6}
+kernel in~\cite{muller2003particle}.
+
+As seen in $\cite{macklin2013position}$, we can observe that this is not stable
+when the particles are at the boundary of the smoothing kernel, mainly because
+of the denominator with the exponents in the kernel function.  Therefore a user
+specified relaxation parameter, $\varepsilon$, is added to $\ref{eq:Taylor}$ to
+add constraint force. The modified version of $\ref{eq:lambdaallparticles}$ is
+given by
+
 \begin{equation}
 \label{eq:LambdaEpsilon}
 \lambda_i = \frac{- C_i(\hat{\mathbf{x}}) }{ \sum\limits_{k} |\nabla \mathbf{x}_k C_i|^2 + \varepsilon}.
 \end{equation}
-\\
-We can now include $\lambda_j$ from the neighbouring particles in the estimation of the final position update, $\Delta \mathbf{x}$, given by
+We can now include $\lambda_j$ from the neighbouring particles in the
+estimation of the final position update, $\Delta \mathbf{x}$, given by
 
 \begin{equation}
 \label{eq:DeltaP}
 \Delta \mathbf{x}_i = \frac{1}{\rho_0} \sum\limits_{j} (\lambda_i + \lambda_j) \nabla W(\mathbf{x}_i - \mathbf{x}_j, h).
 \end{equation}
 
-\subsection{Tensile instability}
-We continue to follow the theory at \cite{macklin2013position}, by adding an artificial pressure to reduce unwanted particle behaviour. The negative pressure tends to result into particle clustering and sometimes hard coupling, which is a common problem in SPH simulations. The trick is therefore to force the pressure to be non-negative, with following drawback; a reduction of the particles' cohesiveness. The artificial pressure force is described as
-\\
+\subsection{Tensile instability} We continue to follow the theory at
+\cite{macklin2013position}, by adding an artificial pressure to reduce unwanted
+particle behaviour. The negative pressure tends to result into particle
+clustering and sometimes hard coupling, which is a common problem in SPH
+simulations. The trick is therefore to force the pressure to be non-negative,
+with following drawback; a reduction of the particles' cohesiveness. The
+artificial pressure force is described as
+
 \begin{equation}
 \label{eq:Scorr}
 s_{corr} = -k \left( \frac{W(\mathbf{x}_i - \mathbf{x}_j, h)}{W(\Delta \mathbf{q}, h)} \right),
 \end{equation}
-\\
-where $\Delta \mathbf{q}$ is a point with a fixed distance inside the kernel radius and k is a small positive constant. This term is then included in equation $\ref{eq:DeltaP}$ and the final version is updated to
+
+where $\Delta \mathbf{q}$ is a point with a fixed distance inside the kernel
+radius and k is a small positive constant. This term is then included in
+equation $\ref{eq:DeltaP}$ and the final version is updated to
 
 \begin{equation}
 \label{eq:DeltaPscorr}
 \Delta \mathbf{x} = \frac{1}{\rho_0} \sum\limits_{j} (\lambda_i + \lambda_j + s_{corr}) \nabla W(\mathbf{x}_i - \mathbf{x}_j, h).
 \end{equation}
 
-\subsection{Vorticity confinement and Viscosity}
-We add lost energy, called vorticity, to compensate the lost turbulent motion in our simulation, see \cite{macklin2013position}.
-Firstly, the vorticity, which defines the curl of the local vector field at the current particle's location, is calculated by using SPH kernel function
+\subsection{Vorticity confinement and Viscosity} We add lost energy, called
+vorticity, to compensate the lost turbulent motion in our simulation, see
+\cite{macklin2013position}.  Firstly, the vorticity, which defines the curl of
+the local vector field at the current particle's location, is calculated by
+using SPH kernel function
 
 \begin{equation}
 \label{eq:Omega}
 \omega_{i} = \nabla \times \mathbf{v} =  \sum\limits_{j} \mathbf{v}_{ij} \times \nabla_{\mathbf{x}_{j}} W(\mathbf{x}_{i} - \mathbf{x}_{j}, h),
 \end{equation}
-where $\mathbf{v}_{ij} = \mathbf{v}_{j} - \mathbf{v}_{i}$. Then we use the location vector $\mathbf{N} = \frac{\eta}{|\eta|}$, with $\eta = \nabla|\omega|_{i}$
-, which will have a direction from areas with low vorticity towards areas containing high vorticity. The resulting vorticity force is defined by
-\\
+
+where $\mathbf{v}_{ij} = \mathbf{v}_{j} - \mathbf{v}_{i}$. Then we use the
+location vector $\mathbf{N} = \frac{\eta}{|\eta|}$, with $\eta =
+\nabla|\omega|_{i}$ , which will have a direction from areas with low vorticity
+towards areas containing high vorticity. The resulting vorticity force is
+defined by
+
 \begin{equation}
 \label{eq:Vorticity}
 \mathbf{f}_{i_{vorticity}} = \varepsilon \left(\mathbf{N} \times \omega_{i} \right).
 \end{equation}
-\\
-The viscocity is also added to the velocity vector field as a force, the term will control the fluid's consistency and is calculated as
+
+The viscocity is also added to the velocity vector field as a force, the term
+will control the fluid's consistency and is calculated as
+
 \begin{equation}
 \label{eq:Viscosity}
 \mathbf{v}_{i_{new}} = \mathbf{v}_{i} + c \sum\limits_{j} \mathbf{v}_{ij} \cdot W(\mathbf{x}_i - \mathbf{x}_j, h).
