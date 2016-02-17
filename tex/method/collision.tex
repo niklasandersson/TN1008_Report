@@ -6,7 +6,7 @@ solving collisions between particles. Due to the fact that particles and other
 objects for that matter only interact in small regions it is well suited to
 look at methods involving spatial subdivisions.
 
-\subsubsection{Uniform grid}
+\subsubsection{Uniform Grid}
 
 One such method that also performs well and is easy to parallelize is the use
 of a \textit{Uniform Grid} \cite{Green}. A uniform grid implies that the world
@@ -21,7 +21,7 @@ behind SPH, as those require all neighbouring particles within a certain
 distance (defined by the kernel width of \textit{Spiky} and \textit{Poly6}
 kernels).
 
-\subsection{Solving collision constraints}
+\subsection{Solving Collision Constraints}
 
 For solving collision constraints we use the method in
 \cite{Green} that are based upon sorting grid cells of a uniform grid. First is
