@@ -1,14 +1,14 @@
-The workflow for solving the density constraint is closely tied with the theory starting at Equation \ref{eq:Ci}. 
-To determine $\lambda_{i}$, the components in Equation \ref{eq:LambdaEpsilon} are calculated seperately in parallel 
+The work flow for solving the density constraint is closely tied with the theory starting at Equation \ref{eq:Ci}. 
+To determine $\lambda_{i}$, the components in Equation \ref{eq:LambdaEpsilon} are calculated separately in parallel 
 for each particle \textit{i}.
-The numerator is calculated by following Equation \ref{eq:Ci}, which is a sum of the smoothing kernel \textit{Poly6} over 
+The numerator is calculated by following Equation \ref{eq:Ci}, which is a sum of the smoothing kernel Poly6 over 
 all neighbours. The smoothing kernel has a width $h_{Poly6} = 4.1$ and the rest density parameter, $\rho$, is set to be $\rho = 1200$. 
-The denominator is a sum of the norm of the \textit{Spiky} kernel calculated over all neighbours 
-and is then set to the power of 2. The kernel width $h_{Spiky} = 6.1$ for \textit{Spiky} works well and the 
+The denominator is a sum of the norm of the Spiky kernel calculated over all neighbours 
+and is then set to the power of 2. The kernel width $h_{Spiky} = 6.1$ for Spiky works well and the 
 relaxation parameter $\varepsilon$ is set to $\varepsilon = 0.0001$.
 \\
 \newline
-To extend the parallization even more we rearrange and rewrite Equation \ref{eq:LambdaEpsilon} by including Equation \ref{eq:NablaC}. With the 
+To extend the parallelization even more we rearrange and rewrite Equation \ref{eq:LambdaEpsilon} by including Equation \ref{eq:NablaC}. With the 
 new Equation \ref{eq:LambdaNew} we can observe that the difference between the sums is the abosolute value mark 
 outside respectively inside of the sums: 
 \\
