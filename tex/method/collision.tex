@@ -45,7 +45,7 @@ for more convenient reads and writes inside the code.
 Now all particles in each grid cell lie next to each other in memory. To then
 find neighbouring particles it is convenient to know the start and end of each
 cell. These are found by launching kernels per particle, where each particle
-compares it's cell id with the cell id of the previous and next particle to see
+compares its cell id with the cell id of the previous and next particle to see
 if they are equal. If the previous particle's cell id is different from this
 particle's cell id we know that the starting index of the cell for this
 particle is the index of this particle. Vice versa then applies to finding the
