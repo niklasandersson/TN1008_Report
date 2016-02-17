@@ -21,19 +21,6 @@ behind SPH, as those require all neighbouring particles within a certain
 distance (defined by the kernel width of \textit{Spiky} and \textit{Poly6}
 kernels).
 
-\subsubsection{Collision with objects}
-
-By transforming the geometry of an object to a particle representation and
-adding shape matching constraints to hold the particles together one can also
-have collisions with arbitrary objects \cite{muller2005meshless,
-macklin2014unified}. The process of creating a particle representation of an
-object is called \textit{Voxelization} and there exist various methods for
-achieving this, e.g. \cite{VoxPolygon, VoxSingle}. Some methods build
-\textit{Occtrees} to be used for querying occupied \textit{Voxels} while other
-methods derive the particle representation from \textit{Ray-casting}
-\cite{VoxSingle}. Performance wise it is suitable to perform the Voxelization
-of objects prior to the start of the simulation.
-
 \subsection{Solving collision constraints}
 
 For solving collision constraints we use the method in
