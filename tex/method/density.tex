@@ -5,10 +5,17 @@ The numerator is calculated by following equation \ref{eq:Ci}, which is a sum of
 all neighbours. The smoothing kernel has a width $h_{Poly6} = 4.1$ and the rest density parameter, $\rho$, is set to be $\rho = 1200$. 
 The denominator is a sum of the norm of the \textit{Spiky} kernel calculated over all neighbours 
 and is then set to the power of 2. The kernel width $h_{Spiky} = 6.1$ for \textit{Spiky} works well and the 
-relaxation parameter $\varepsilon$ is set to $\varepsilon = 0.0001$. 
+relaxation parameter $\varepsilon$ is set to $\varepsilon = 0.0001$.
 \\
-To speed up the performance the sum included in \textit{Spiky} can be replaced by multiplying the donimator at equation
-\ref{eq:LambdaEpsilon} with 2, since these two sums are equal.
+\newline
+To extend the parallization even more we rearrange and rewrite equation \ref{eq:LambdaEpsilon} by including \ref{eq:NablaC}. With the 
+new equation \ref{eq:LambdaNew} we can observe that the difference between the sums is the abosolute value mark 
+outside respectively inside of the sums: 
+\\
+\begin{equation}
+\label{eq:LambdaNew}
+\lambda_i = \frac{- C_i(\hat{\mathbf{x}}) }{ |\sum\limits_{k} \nabla \mathbf{x}_k W|^{2} + \sum\limits_{j} |-\nabla \mathbf{x}_j W|^2  + \varepsilon}.
+\end{equation}
 \\
 \newline
 We then continue to follow the algorithm overview at \ref{alg:overview}, where the next step is to estimate the new position $\Delta \mathbf{x}^{*}_{i}$.
