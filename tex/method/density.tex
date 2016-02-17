@@ -8,7 +8,7 @@ and is then set to the power of 2. The kernel width $h_{Spiky} = 6.1$ for \texti
 relaxation parameter $\varepsilon$ is set to $\varepsilon = 0.0001$.
 \\
 \newline
-To extend the parallization even more we rearrange and rewrite Equation \ref{eq:LambdaEpsilon} by including \ref{eq:NablaC}. With the 
+To extend the parallization even more we rearrange and rewrite Equation \ref{eq:LambdaEpsilon} by including Equation \ref{eq:NablaC}. With the 
 new Equation \ref{eq:LambdaNew} we can observe that the difference between the sums is the abosolute value mark 
 outside respectively inside of the sums: 
 \\
@@ -29,8 +29,8 @@ as seen at line 20 at Algorithm \ref{alg:overview}.
 \subsubsection{Vorticity and Viscosity}
 The steps to calculate the vorticity and viscosity are fully described from Equation \ref{eq:Omega} to Equation \ref{eq:Viscosity}.
 A local estimation of the vorticity is initially calculated and defined as $\omega$. The complete vorticity force is then determined 
-by EEquation \ref{eq:Viscosity}, where we use the force strength parameter as $\varepsilon = 1$. The force is then added to the total 
+by Equation \ref{eq:Viscosity}, where we use the force strength parameter as $\varepsilon = 1$. The force is then added to the total 
 external force that is affecting the particles at the beginning of the time step, as seen at line 2 at Algorithm \ref{alg:overview}. 
 \\
 The new viscosity velocity is calculated by adding the old velocity with the sum of the smoothing kernel \textit{Poly6} multiplied by the velocity difference between 
-the current particle and its neighbours. The viscosity strength parameter, as seen in \ref{eq:Viscosity}, is $c = 0.0001$. 
+the current particle and its neighbours. The viscosity strength parameter, as seen in Equation \ref{eq:Viscosity}, is $c = 0.0001$. 
