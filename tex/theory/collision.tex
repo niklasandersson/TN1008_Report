@@ -1,5 +1,5 @@
 The collision constraint between two particles $ \mathbf{x}_{i} $ and $
-\mathbf{x}_{j} $ is formulated by Equation \ref{eq:collisionConstraint}, where
+\mathbf{x}_{j} $ is formulated below, where
 $ r $ is the radius of the particles and $ \mathbf{x_{ij}} = \mathbf{x_{i}} - \mathbf{x_{j}} $.
 
 \begin{equation} \label{eq:collisionConstraint}
@@ -7,7 +7,7 @@ $ r $ is the radius of the particles and $ \mathbf{x_{ij}} = \mathbf{x_{i}} - \m
 \end{equation}
 
 The gradient of the collision constraint with respect to each particle is the
-normalized collision vector as defined in Equation~\ref{eq:collisiongradient}.
+normalized collision vector as defined as follows:
 
 \begin{equation}
 \label{eq:collisiongradient}
@@ -19,8 +19,9 @@ normalized collision vector as defined in Equation~\ref{eq:collisiongradient}.
 \end{equation}
 
 By substituting Equation~\ref{eq:collisionConstraint} and
-Equation~\ref{eq:collisiongradient} into Equation~\ref{eq:lambdaallparticles} we
-can derive Equation~\ref{eq:lambdacollision}.
+Equation~\ref{eq:collisiongradient} into Equation~\ref{eq:lambdaallparticles}
+we can derive an expression for $ \lambda $ for both particles in the
+constraint:
 
 \begin{equation}
 \label{eq:lambdacollision}
@@ -30,7 +31,7 @@ can derive Equation~\ref{eq:lambdacollision}.
 In order to calculate the two correction vectors, $ \Delta \mathbf{x_{i}} $ and
 $ \Delta \mathbf{x_{j}} $, for the position of each particle we insert
 Equation~\ref{eq:lambdacollision} and Equation~\ref{eq:collisiongradient} into
-Equation~\ref{eq:deltaX} arrive at the result in Equation~\ref{eq:collisionresult}.
+Equation~\ref{eq:deltaX} arrive at the following result:
 
 \begin{equation}
 \label{eq:collisionresult}
@@ -40,3 +41,4 @@ Equation~\ref{eq:deltaX} arrive at the result in Equation~\ref{eq:collisionresul
 \Delta \mathbf{x_{j}} = -\frac{w_{j}}{w_{i} + w_{j}}(\left | \mathbf{x_{ij}} \right | - r) \frac{\mathbf{x_{ij}}}{\left | \mathbf{x_{ij}} \right |}
 \end{aligned}
 \end{equation}
+
