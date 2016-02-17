@@ -1,5 +1,5 @@
-As seen in~\ref{alg:overview} the first thing that needs to be done at the
-begining of a time step is to update the velocities of all particles by
+As seen in Algorithm ~\ref{alg:overview} the first thing that needs to be done at the
+beginning of a time step is to update the velocity of all particles by
 considering their current velocity and any external forces applied to them as follows:
 
 \begin{equation}
@@ -7,7 +7,7 @@ considering their current velocity and any external forces applied to them as fo
 \mathbf{v}_{i}^{new} = \mathbf{v}_{i} + (\mathbf{f}_{gravity} + \mathbf{f}_{i_{vorticity}})\Delta t
 \end{equation}
 
-We only cosider two external forces $ f_{gravity} $ and $ f_{i_{vorticity}} $
+We only consider two external forces $ f_{gravity} $ and $ f_{i_{vorticity}} $
 that represents the force contributed by gravity and vorticity calculations
 respectivly. Note that vorticity is calculated at a later stage but is carried
 over to the next time step so the $ f_{i_{vorticity}} $ that gets applied here
