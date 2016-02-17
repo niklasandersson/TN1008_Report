@@ -5,10 +5,10 @@ explain the theory involed in creating a fluid simulation.
 \input{tex/theory/pbd.tex}
 
 
-\subsection{Collision Constraint}
+\subsection{Collision constraint}
 \input{tex/theory/collision.tex}
 
-\subsection{Density}
+\subsection{Density constraint}
 
 The estimation of the predicted position of the particles is initially based on
 solving a density constraint $C$ at Equation $\ref{eq:Taylor}$. Where each
@@ -71,7 +71,7 @@ estimation of the final position update, $\Delta \mathbf{x}$, given by
 \Delta \mathbf{x}_i = \frac{1}{\rho_0} \sum\limits_{j} (\lambda_i + \lambda_j) \nabla W(\mathbf{x}_i - \mathbf{x}_j, h).
 \end{equation}
 
-\subsection{Tensile Instability} We continue to follow the theory in
+\subsection{Tensile instability} We continue to follow the theory in
 \cite{macklin2013position} that describes different problems with particle clustering and coupling as a result of negative pressure. The trick is to force the pressure to be non-negative using an additional pressure term. This pressure
 force is described as
 
