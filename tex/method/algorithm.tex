@@ -1,11 +1,10 @@
-In order to create a fluid simulation using position-based dynamics the two
+In order to create a fluid simulation using PBD the two
 types of constraints described in the theory section were used. Collision
 constraints were used in order to handle collision between pairs of particles
 and density constraints were used to give the particles a fluid like behavior.
 In this section we will describe how this simulation was implemented.
-Algorithm~\ref{alg:overview} presents an outline of the simulation and
-presentes the steps that are repeated for every time step. This overview will
-act as the basis for the reminder of this section.
+Algorithm~\ref{alg:overview} presents an outline of the simulation and the steps that are repeated for every time step. This overview will
+act as the basis for the remainder of this section.
 
 \begin{algorithm}
 \caption{Outline of a simulation step}
