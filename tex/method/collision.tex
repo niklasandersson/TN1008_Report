@@ -64,7 +64,7 @@ of the cell.
 
 Once we found the neighbouring particles of each particle there are several
 methods that can be applied to solve the collision constraints between them. We
-have implemented two different methods. The first method implemented was using
+have implemented two different methods. The first method implemented is using
 atomics and can either be executed per constraint or per particle. We prefer
 the per constraint manner where the following happens:
 
@@ -84,7 +84,7 @@ particles and not to perform a physical collision. To perform read and write
 (update) of the positions we must involve atomics as there can be several
 threads writing to the same memory address at the same time.
 
-The second method we implemented to solve collision constraints is based on
+The second method that we implemented to solve collision constraints is based on
 constructing a number of batches (maximum number of batches needed equals the
 number of possible collisions per particle) \cite{bullet}, where each batch
 contains a set of collision constraints that can be solved in parallel without

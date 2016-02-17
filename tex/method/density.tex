@@ -21,7 +21,7 @@ outside respectively inside of the sums:
 
 We then continue to follow the algorithm overview at Algorithm \ref{alg:overview}, line 16, where the next step is to estimate the new position $\Delta \mathbf{x}^{*}_{i}$.
 The predicted position is defined at Equation \ref{eq:DeltaPscorr}, containing a sum of $s_{corr}$ , $\lambda_{i}$, $\lambda_{j}$
-and Spiky kernel over all neighbours.
+and the Spiky kernel over all neighbours.
 The parameters of $s_{corr}$; k, n and $ \nabla \mathbf{q}$, are defined as $k = 0.2, n = 4, |\nabla \mathbf{q}| = 0.2$.
 
 At last, the total predicted position is updated and applied by adding the newly and previously estimated position,
