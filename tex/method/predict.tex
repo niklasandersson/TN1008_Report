@@ -1,5 +1,4 @@
-As seen in Algorithm ~\ref{alg:overview} the first thing that needs to be done at the
-beginning of a time step is to update the velocity of all particles by
+As seen in Algorithm ~\ref{alg:overview} the first thing that needs to be done at the beginning of a time step is to update the velocity of all particles by
 considering their current velocity and any external forces applied to them as follows:
 
 \begin{equation}
@@ -9,9 +8,9 @@ considering their current velocity and any external forces applied to them as fo
 
 We only consider two external forces $ f_{gravity} $ and $ f_{i_{vorticity}} $
 that represents the force contributed by gravity and vorticity calculations
-respectivly. Note that vorticity is calculated at a later stage but is carried
+respectively. Note that vorticity is calculated at a later stage but is carried
 over to the next time step so the $ f_{i_{vorticity}} $ that gets applied here
-was calculated at the privious time step.
+was calculated at the previous time step.
 
 Once the velocity has been obtained it is used to predict a new particle
 position according to the following expression:
@@ -22,7 +21,7 @@ position according to the following expression:
 \end{equation}
 
 Having calculated the predicted position it is also necessary to verify that it
-is acctually a valid position. This is a requierment since the simulation is
+is actually a valid position. This is a requirement since the simulation is
 limited to a certain volume. This step is performed by comparing the predicted
 position against the boundary of the space containing the simulation. If a
 particle is located outside the boundary its position is clamped to be inside
