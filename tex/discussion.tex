@@ -31,3 +31,10 @@ to interact. This would include changing how density is estimated between
 neighboring particles to accommodate for a per particle variation in density
 contribution. The result of this would be that phenomena such as oil floating
 on top of water could be simulated.
+
+In order to improve the visual presentation of the results we could apply a
+fluid surface rendering scheme to the particles. One such method is presented
+in~\cite{van2009screen} where a surface is constructed by rendering the depth
+of the particles and applying a so called curvature flow filter. The filter has
+the effect of blending the particles together and making the spherical shapes
+less distinct resulting in the appearance of a smooth surface.
