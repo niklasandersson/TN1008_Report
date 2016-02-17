@@ -24,7 +24,7 @@ kernels).
 \subsection{Solving Collision Constraints}
 
 For solving collision constraints we use the method in
-\cite{Green} that are based upon sorting grid cells of a uniform grid. First is
+\cite{Green} that is based upon sorting grid cells of a uniform grid. First is
 the buffer that is going to store the cell ids filled with the maximum value of
 an unsigned integer.  Then, per particle, is a cell id computed and stored in
 the cell ids buffer at the location represented by the index of the particle.
@@ -67,12 +67,12 @@ Once we found the neighbouring particles of each particle there are several
 methods that can be applied to solve the collision constraints between them. We
 have implemented two different methods. The first method implemented uses
 atomics and can either be executed per constraint or per particle. We prefer
-the per constraint manner where the following happens.
+the per constraint manner where the following happens:
 
 \begin{enumerate}
-\item Each particle $p$ stores it's neighbours in a buffer.
+\item Each particle $p$ stores its neighbours in a buffer.
 \item Launch kernels for each neighbouring particle $q$ in the buffer.
-\item From the index of the element particle $p$ can be derived.
+\item From the index of the element, particle $p$ can be derived.
 \item We now know that particles $p$ and $q$ are affected by this constraint.
 \item Solve the collision constraint and update both $\mathbf{x}_{p}$ and $\mathbf{x}_{p}^{*}$.
 \end{enumerate}
