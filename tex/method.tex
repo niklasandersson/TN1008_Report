@@ -9,12 +9,21 @@
 \subsection{Solving the Density Constraint}
 \input{tex/method/density.tex}
 
-\subsection{Rendering}
-To reduce frame times we use point sprites based upon geometry shaders when rendering the particles. As we store the positions in textures we use instance rendering of a single vertex and then use the instance id to compute the texture coordinates used when querying the texture storing the positions. The fetched position is then used as output of the vertex shader. After, in the geometry shader, we spawn four new vertices making up the surface plane of the particle. Finally in the fragment shader we compute the normal in order to make the point sprite appear as a shaded sphere.
+\subsection{Rendering} To reduce frame times we use point sprites based upon
+geometry shaders when rendering the particles. As we store the positions in
+textures we use instance rendering of a single vertex and then use the instance
+id to compute the texture coordinates used when querying the texture storing
+the positions. The fetched position is then used as output of the vertex
+shader. After, in the geometry shader, we spawn four new vertices making up the
+surface plane of the particle. Finally in the fragment shader we compute the
+normal in order to make the point sprite appear as a shaded sphere.
 
-There is also a wireframe of a box rendered that contains the volume where particle collisions can take place. We are limited due to the calculation of Morton codes when constructing the grid. 
+There is also a wireframe of a box rendered that contains the volume where
+particle collisions can take place. We are limited due to the calculation of
+Morton codes when constructing the grid.
 
-The floor is rendered using a procedural checker pattern with anti aliasing and is there to provide positional awareness.
+The floor is rendered using a procedural checker pattern with anti aliasing and
+is there to provide users with a cue for positional awareness.
 
 % Something \cite{van2009screen}
 
