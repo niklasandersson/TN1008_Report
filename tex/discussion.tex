@@ -1,23 +1,33 @@
-From the beginning our goal was to create a GPU framework like
-\cite{macklin2014unified} supporting simulation of many different elements,
-e.g. fluids, cloth and rigid bodies. Therefore we started of studying how
-Position-Based Dynamics worked in general. When we had an understanding of what
-we would need to do in order to achieve our goal we decided to start
-implementing prototype applications solving the constraints we were interested
-in. The selected constraints were shape matching constraints for rigid and
-deformable bodies and density constraints for fluids.
+Our implementation of a fluid simulation using position-based dynamics was able
+to achieve real-time performance for a large number of particles even while
+running on laptop grade hardware. By varying parameters such as vorticity and
+viscosity different fluid behaviors can be achieved ranging form thick slow
+moving substances to quick and turbulent water.
 
-These prototypes had simulations running in 2D and were made single threaded to
-allow more convenient debugging on the CPU. However as the project progressed
-and when we were about to make the switch to the GPU we decided to narrow our
-scope. Hence our focus shifted into solely develop a fluid simulation running
-on the GPU in 3D.
+In order for the simulation to be running in real time it was necessary to
+exploit high levels of parallelism. Initial tests where conducted in the form
+of single threaded applications running on the CPU but we where only able to
+simulate less than 500 particles before the framerate became unacceptably low.
+Even running the simulation in a multithreaded manner on modern CPUs capable of
+8 or more concurrent tasks would not be sufficient to achieve the desired
+performance. The solution to this problem was to utilize the massively parallel
+architecture of current GPUs (Graphics Processing Unit) that are often times
+capable of over 1000 simultaneously executing tasks. The downside to using GPUs
+is that due to their unique architecture they make creating programs for them
+more difficult than something running on a CPU.
 
-We first had a stint working with OpenCL and OpenGL interoperability. But after
-a longer break we decided to make the switch to CUDA and OpenGL
-interoperability instead. This as we were keen on using CUDA \textit{Surfaces}
-which are textures that can be both written and read during the same kernel
-run.
+\subsection{Future Work}
+Position-based dynamics is not limited to simulating
+fluids and can be used to model a large variety of behaviors. The possibilities
+of position-based dynamics are only limited to the number of constraints that
+can be expressed. It would be of interest to further develop our software to
+handle materials such as cloth as described in~\cite{muller2007position} using
+stretching constraints or deformation of objects~\cite{muller2005meshless} by
+incorporating shape matching constraints.
 
-In the remainder of this section we will in greater detail explain the
-implementations of the prototypes and the final fluid simulation.
+It would also be of interest to further extend the fluid simulation as
+described in~\cite{macklin2014unified} to allow for fluids of varying densities
+to interact. This would include changing how density is estimated between
+neighboring particles to accommodate for a per particle variation in density
+contribution. The result of this would be that phenomena such as oil floating
+on top of water could be simulated.
