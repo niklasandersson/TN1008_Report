@@ -89,9 +89,9 @@ Equation $\ref{eq:DeltaP}$ and the final version is updated to
 \Delta \mathbf{x} = \frac{1}{\rho_0} \sum\limits_{j} (\lambda_i + \lambda_j + s_{corr}) \nabla W(\mathbf{x}_i - \mathbf{x}_j, h).
 \end{equation}
 
-\subsection{Vorticity Confinement and Viscosity} 
-In order to add turbulent motion to the fluid we add a \textit{Vorticity} term to the calculations, as described in
-\cite{macklin2013position}. The Vorticity is calculated by first using the
+\subsection{Vorticity confinement and viscosity} 
+In order to add turbulent motion to the fluid we add a \textit{vorticity} term to the calculations, as described in
+\cite{macklin2013position}. The vorticity is calculated by first using the
 Spiky kernel function as following:
 
 \begin{equation}
@@ -101,15 +101,15 @@ Spiky kernel function as following:
 
 where $\mathbf{v}_{ij} = \mathbf{v}_{j} - \mathbf{v}_{i}$, and then by using the
 vector $\mathbf{N} = \frac{\eta}{|\eta|}$, with $\eta = \nabla|\omega_{i}|$,
-which will have a direction from areas with low Vorticity towards areas
-containing high Vorticity. The resulting Vorticity force is defined by
+which will have a direction from areas with low vorticity towards areas
+containing high vorticity. The resulting vorticity force is defined by
 
 \begin{equation}
 \label{eq:Vorticity}
 \mathbf{f}_{i_{vorticity}} = \varepsilon \left(\mathbf{N} \times \omega_{i} \right).
 \end{equation}
 
-The \textit{Viscosity} is added to the velocity of the particles', the term
+The \textit{viscosity} is added to the velocity of the particles', the term
 will control the fluid's consistency and is calculated as
 
 \begin{equation}
