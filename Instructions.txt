@@ -1,0 +1,27 @@
+This software will only run under the Microsoft Windows operating system and
+requires a graphics card from NVIDIA with appropriate drivers installed.
+
+Starting the software:
+1. Read the file README.txt that was distributed alongside this software.
+2. Execute the file PBD-Simulation-Framework-CUDA.exe by double-clicking on its
+	icon.
+
+Controlling the simulation:
+1. Use the W, A, S and D keys to move the camera.
+2. Change the view direction by moving the mouse.
+3. Detach/Reattach the mouse cursor by pressing the m key.
+4. Spawn a box of particles by typing s in the command console window.
+5. Remove all particles by typing c in the command console window.
+6. Type ls in the command console window to list all available commands.
+7. Exit the program by typing q in the command console window.
+
+Troubleshooting/Known issues:
+- If the program fails to start and issues an error message complaining about
+	missing DLL files, downloading and installing the Visual C++ Redistributable
+	Packages for Visual Studio 2013 from
+	https://www.microsoft.com/en-us/download/details.aspx?id=40784
+	might solve the issue.
+- Spawning more than 64 000 particles will cause the simulation to crash due to
+	a memory issue.
+- A rendering issue appearing as a clear blue spot is present at times.
+- Loading a new configuration file while running the program can fail.
