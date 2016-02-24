@@ -62,8 +62,7 @@ enabling or disabling of features like vorticity and viscosity.
 
 \newpage
 
-In Figure \ref{fig:graphen} the performance impact of increasing the number of
-particles is shown. This graph clearly demonstrates that real-time performance
+The performance impact of increasing the number of particles is shown Table \ref{tb:res} and in Figure \ref{fig:graphen}. The graph clearly demonstrates that real-time performance
 is achievable even on less powerful graphics cards such as the NVIDIA Geforce
 540m and NVIDIA Geforce 750m. Also note that the performance falloff is linear with
 respect to the amount of particles.
@@ -76,3 +75,20 @@ respect to the amount of particles.
 \end{figure}
 
 
+\begin{center}
+  \captionof{table}{Frames per second measured 30 seconds into the simulation.}
+      \small
+  \label{tb:res}
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{ | l | l | l | l | l | l | }
+    \hline
+
+    \textbf{Number of  particles} & \textbf{4096} & \textbf{8192} & \textbf{16384} & \textbf{32768} & \textbf{64512} \\ \hline
+    NVIDIA Geforce 540m & 67 fps & 32 fps & 15 fps & 7 fps & 4 fps \\ \hline
+    NVIDIA Geforce 740m & 100 fps & 65 fps & 32 fps & 16 fps & 8 fps \\ \hline
+    NVIDIA Geforce GTX 780 & 444 fps & 308 fps & 168 fps & 98 fps & 47 fps \\ \hline
+    NVIDIA Geforce GTX 960 & 445 fps & 260 fps & 123 fps & 62 fps & 30 fps \\ \hline
+    NVIDIA Geforce GTX 970 & 556 fps & 384 fps & 186 fps & 95 fps & 47 fps \\ \hline
+    \end{tabular}
+    }
+\end{center}
