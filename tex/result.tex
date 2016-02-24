@@ -1,4 +1,4 @@
-Images over the resulting simulation can be seen in Figure \ref{fig:result} and
+Images over the resulting simulation can be seen in Figure \ref{fig:result0}  \& \ref{fig:result} and
 on the front page. The snapshot on the front page is taken after a simulated
 dam break where the box confining all particles is suddenly enlarged.  In the
 final application the user can steer the camera position with the keyboard and
@@ -11,6 +11,36 @@ to be used in the next session. Among others, here are some examples of options
 that the user can tweak; gravity, kernel width of Poly and Spiky kernels, rest
 density, maximum number of neighbours to be considered per particle and the
 enabling or disabling of features like vorticity and viscosity.
+
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.9\textwidth]{img/eVorticity100.png}
+  \caption{}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.9\textwidth]{img/cViscosity001.png}
+  \caption{}
+\end{subfigure}%
+\\ \\
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.9\textwidth]{img/gravity0.png}
+  \caption{}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.9\textwidth]{img/closeupAfterExplosion.png}
+  \caption{}
+\end{subfigure}%
+
+\caption{The snapshot in (a) shows the fluid when there is a bit higher vorticity, (b) when there is high viscosity, (c) when there is 0 gravity and (d) is taken after two boxes of fluid have spawned inside each other, resulting in an explosion where the particles blob together after a while.}
+\label{fig:result0}
+\end{figure}
 
 \begin{figure}[H]
 \centering
@@ -26,7 +56,7 @@ enabling or disabling of features like vorticity and viscosity.
   \caption{}
 \end{subfigure}%
 
-\caption{Two snapshots of our simulation, where (b) involves neighbouring particles at a larger distance resulting in slightly more curls than (a), due to the vorticity.}
+\caption{Two snapshots of our simulation, where (b) involves neighbouring particles at a larger distance resulting in slightly more curls than (a), this is due to the vorticity.}
 \label{fig:result}
 \end{figure}
 
